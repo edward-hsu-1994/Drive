@@ -11,7 +11,16 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.Extensions.PlatformAbstractions" Version="1.1.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.0.1916590" />
+    <PackageReference Include="XWidget.Cryptography" Version="1.3.0-beta00007" />
+    <PackageReference Include="XWidget.Web.Jwt" Version="1.3.0-beta00007" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Drive.Base\Drive.Base.csproj" />
+    <ProjectReference Include="..\Drive.Logic\Drive.Logic.csproj" />
+    <ProjectReference Include="..\Drive.Models\Drive.FileSystem.csproj" />
   </ItemGroup>
 
 </Project>
