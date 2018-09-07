@@ -93,6 +93,16 @@ namespace Drive.FileSystem {
             Move(target.Path);
         }
 
+        public DirectoryEitity CreateSubdirectory(string name) {
+            return FromDirectoryInfo(DirectoryInfo.CreateSubdirectory(System.IO.Path.Combine(Path, name)));
+        }
+
+        public void CreateFile(string filename, Stream stream) {
+            using (var newFile = File.Create(System.IO.Path.Combine(Path, filename))) {
+                stream.CopyTo(newFile);
+            }
+        }
+
         public static DirectoryEitity FromPath(string path) {
             return FromDirectoryInfo(new DirectoryInfo(path));
         }
