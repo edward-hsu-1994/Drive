@@ -21,6 +21,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.Extensions.PlatformAbstractions;
 using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.Swagger;
+using XWidget.Extensions;
 
 namespace Drive {
     public class Startup {
@@ -101,7 +102,24 @@ namespace Drive {
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env) {
+        public async void Configure(IApplicationBuilder app, IHostingEnvironment env, DriveLogicManager logicManager) {
+            var createScript = logicManager.Database.Database.GenerateCreateScript();
+            try {
+                await logicManager.Database.Database.ExecuteSqlCommandAsync(createScript);
+            } catch { }
+
+            //logicManager.Database.Database.ExecuteSqlCommand(createScript);
+            #region Init Default User
+            if (logicManager.UserLogic.List().Count() == 0) {
+                logicManager.UserLogic.Create(new User() {
+                    Id = "admin",
+                    IsAdmin = true
+                }.Process(x => {
+                    x.SetPassword("admin");
+                }));
+            }
+            #endregion
+
             if (env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();
             }
