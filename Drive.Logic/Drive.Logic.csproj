@@ -1,11 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="XWidget.EFLogic" Version="1.3.0-beta00007" />
+    <PackageReference Include="XWidget.EFLogic" Version="1.3.0-beta00009" />
   </ItemGroup>
 
   <ItemGroup>

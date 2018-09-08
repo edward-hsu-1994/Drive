@@ -6,6 +6,7 @@ using XWidget.EFLogic;
 
 namespace Drive.Logic {
     public class DriveLogicManager : LogicManagerBase<DriveContext> {
+        public UserLogic UserLogic { get; set; }
         public DriveLogicManager(DriveContext dbcontext) : base(dbcontext) { }
     }
 }
