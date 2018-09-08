@@ -51,11 +51,11 @@ namespace Drive.FileSystem {
             }
         }
 
-        public DateTime CreationTime => this.DirectoryInfo.CreationTime;
+        public DateTime CreationTime => DirectoryInfo.CreationTime;
 
-        public DateTime ModifyTime => this.ModifyTime;
+        public DateTime ModifyTime => DirectoryInfo.LastWriteTime;
 
-        public DateTime AccessTime => this.AccessTime;
+        public DateTime AccessTime => DirectoryInfo.LastAccessTime;
 
         public void Delete() {
             Directory.Delete(this.Path, true);

@@ -25,11 +25,16 @@ using XWidget.Extensions;
 
 namespace Drive {
     public class Startup {
+        public const string RootDirectory = "RootDirectory";
         public Startup(IConfiguration configuration) {
             Configuration = configuration;
+
+            if (Configuration[RootDirectory] == null) {
+                Configuration[RootDirectory] = Environment.GetEnvironmentVariable(RootDirectory);
+            }
         }
 
-        public IConfiguration Configuration { get; }
+        public static IConfiguration Configuration { get; set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
