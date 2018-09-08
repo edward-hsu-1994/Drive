@@ -57,7 +57,11 @@ namespace Drive.FileSystem {
         }
 
         public void MoveTo(IFileSystemItem target) {
-            Move(target.Path);
+            if (target is DirectoryEitity) {
+                Move(System.IO.Path.Combine(target.Path, Name));
+            } else if (target is FileEitity) {
+                Move(target.Path);
+            }
         }
 
         public static FileEitity FromPath(string path) {
