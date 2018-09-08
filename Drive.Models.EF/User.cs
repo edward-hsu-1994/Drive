@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
+using XWidget.Web.Mvc.PropertyMask;
 
 namespace Drive.Models.EF {
     /// <summary>
@@ -19,8 +20,7 @@ namespace Drive.Models.EF {
         /// <summary>
         /// 密碼雜湊
         /// </summary>
-        [MinLength(32)]
-        [MaxLength(32)]
+        [PropertyMask]
         public string Password { get; set; }
 
         /// <summary>

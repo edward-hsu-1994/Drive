@@ -6,6 +6,8 @@ using XWidget.EFLogic;
 
 namespace Drive.Logic {
     public class UserLogic : LogicBase<DriveContext, User, string> {
-        public UserLogic(LogicManagerBase<DriveContext> logicManager) : base(logicManager) { }
+        public UserLogic(LogicManagerBase<DriveContext> logicManager) : base(logicManager) {
+            CreateIgnoreIdentity = false;
+        }
     }
 }
