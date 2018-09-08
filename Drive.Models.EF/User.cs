@@ -1,16 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace Drive.Models.EF {
     /// <summary>
     /// 使用者資訊
     /// </summary>
-    public class User {
+    [Table("User")]
+    public partial class User {
         /// <summary>
         /// 帳號
         /// </summary>
+        [Key]
         public string Id { get; set; }
 
         /// <summary>
