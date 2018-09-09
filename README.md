@@ -56,7 +56,7 @@
 
 ## 流程圖
 1. 登入 
-   ![Imgur](https://i.imgur.com/al4VLmh.png)
+![Imgur](https://i.imgur.com/al4VLmh.png)
 2. 使用者建立
 3. 變更密碼
 4. 瀏覽目錄檔案列表
