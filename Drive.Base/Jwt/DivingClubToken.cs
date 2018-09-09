@@ -13,6 +13,11 @@ namespace Drive.Base.Jwt {
             /// 管理介面登入
             /// </summary>
             public const string ConsoleLogin = "ConsoleLogin";
+
+            /// <summary>
+            /// Download
+            /// </summary>
+            public const string Download = "Download";
         }
 
         /// <summary>
@@ -23,6 +28,11 @@ namespace Drive.Base.Jwt {
             /// 系統管理員
             /// </summary>
             public const string Administrator = "Administrator";
+
+            /// <summary>
+            /// Download
+            /// </summary>
+            public const string Download = "Download";
         }
 
         public DefaultJwtHeader Header { get; set; }

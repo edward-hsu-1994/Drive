@@ -1,4 +1,5 @@
 ﻿using Drive.Logic;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System;
@@ -12,6 +13,7 @@ namespace Drive.Base.Mvc {
     /// </summary>
     [Route("api/[controller]")]
     [Produces("application/json")]
+    [Authorize(/*Roles = "Administrator"*/)]
     [ApiController]
     public class BaseController : Controller {
         /// <summary>

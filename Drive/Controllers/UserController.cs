@@ -18,7 +18,7 @@ namespace Drive.Controllers {
     /// <summary>
     /// 使用者控制器
     /// </summary>
-    public class UserController : ManageBaseController {
+    public class UserController : BaseController {
         public UserController(DriveLogicManager manager) : base(manager) {
         }
 

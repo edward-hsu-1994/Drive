@@ -33,6 +33,8 @@ namespace Drive.FileSystem {
             }
         }
 
+        public string DownloadUrl { get; set; }
+
         public string Name {
             get {
                 return FileInfo.Name;
