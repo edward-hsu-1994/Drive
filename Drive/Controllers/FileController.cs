@@ -119,6 +119,25 @@ namespace Drive.Controllers {
             }
         }
 
+        [HttpPut("delete")]
+        public void Delete([FromBody]IEnumerable<string> paths) {
+            foreach (var path in paths) {
+                if (string.IsNullOrWhiteSpace(path)) {
+                    continue; // 根目錄禁止刪除
+                }
+
+                string fullPath = System.IO.Path.Combine(Startup.Configuration[Startup.RootDirectory], path);
+
+                FileAttributes attr = System.IO.File.GetAttributes(fullPath);
+
+                if (attr == FileAttributes.Directory) {
+                    DirectoryEntity.FromPath(fullPath).Delete();
+                } else {
+                    FileEntity.FromPath(fullPath).Delete();
+                }
+            }
+        }
+
         private DriveToken VerifyToken(string token) {
             if (JwtTokenConvert.Verify<DriveToken, DefaultJwtHeader, MvcIdentityPayload>(token, new TokenValidationParameters() {
                 IssuerSigningKey = new SymmetricSecurityKey(Startup.Configuration.GetSection("JWT:SecureKey").Value.ToHash<MD5>()),
