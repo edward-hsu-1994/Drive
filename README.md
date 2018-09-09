@@ -57,17 +57,23 @@
 ## 流程圖
 1. 登入
  
-![Imgur](https://i.imgur.com/al4VLmh.png)
+![Imgur](https://i.imgur.com/flKNWPD.png)
 
 2. 會員管理功能
 
-![Imgur](https://i.imgur.com/vFnoSib.png)
+![Imgur](https://i.imgur.com/IUulfki.png)
 
 3. 新增使用者
 
-4. 變更密碼
+![Imgur](https://i.imgur.com/EGFVWSK.png)
+
+4. 變更使用者
+
+![Imgur](https://i.imgur.com/GVn839R.png)
 
 5. 刪除使用者
+
+![Imgur](https://i.imgur.com/BmPFvg9.png)
 
 6. 瀏覽目錄檔案列表
 
