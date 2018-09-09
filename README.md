@@ -77,14 +77,24 @@
 
 6. 瀏覽目錄檔案列表
 
+![Imgur](https://i.imgur.com/rUXcAOV.png)
+
 7. 檔案搜尋
+
+![Imgur](https://i.imgur.com/C4KWwTl.png)
 
 8. 檔案上傳
 
+![Imgur](https://i.imgur.com/7WMmA2s.png)
+
 9. 檔案刪除
+
+![Imgur](https://i.imgur.com/NSp1qK9.png)
 
 10. 檔案搬移
 
+![Imgur](https://i.imgur.com/DTV6DBP.png)
+
 11. 檔案下載
 
-## 類別圖
+![Imgur](https://i.imgur.com/4rrOg9g.png)
