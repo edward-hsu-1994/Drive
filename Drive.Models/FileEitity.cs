@@ -2,12 +2,26 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace Drive.FileSystem {
     public class FileEitity : IFileSystemItem {
+        [JsonIgnore]
         public FileInfo FileInfo { get; set; }
 
+        public string Type => "File";
+
         private FileEitity() { }
+
+        private string _RelativePath;
+        public string RelativePath {
+            get {
+                return this._RelativePath ?? this.Name;
+            }
+            set {
+                this._RelativePath = value;
+            }
+        }
 
         public string Path {
             get {

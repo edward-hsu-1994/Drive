@@ -14,6 +14,9 @@ namespace Drive.FileSystem {
         DateTime ModifyTime { get; }
         DateTime AccessTime { get; }
 
+        string Type { get; }
+        string RelativePath { get; set; }
+
         void Move(string targetPath);
         void MoveTo(IFileSystemItem target);
         void Delete();
