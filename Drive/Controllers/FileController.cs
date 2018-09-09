@@ -69,6 +69,56 @@ namespace Drive.Controllers {
             return File(file, contentType, System.IO.Path.GetFileName(path), true);
         }
 
+        [HttpPost]
+        [HttpPost("{*path}")]
+        [DisableRequestSizeLimit]
+        public IEnumerable<IFileSystemItem> Upload(string path) {
+            if (string.IsNullOrWhiteSpace(path)) {
+                path = "";
+            }
+
+            var rootDirectory = DirectoryEntity.FromPath(Startup.Configuration[Startup.RootDirectory]);
+
+            string fullPath = System.IO.Path.Combine(Startup.Configuration[Startup.RootDirectory], path);
+
+            DirectoryEntity targetDirectory = DirectoryEntity.FromPath(fullPath);
+
+            return Request.Form.Files.Select(x => {
+                return targetDirectory.CreateFile(x.FileName, x.OpenReadStream());
+            });
+        }
+
+        [HttpPut]
+        public void Move(
+            [FromQuery]string from,
+            [FromQuery]string to) {
+            if (string.IsNullOrWhiteSpace(from)) {
+                from = "";
+            }
+            if (string.IsNullOrWhiteSpace(to)) {
+                to = "";
+            }
+
+            var rootDirectory = DirectoryEntity.FromPath(Startup.Configuration[Startup.RootDirectory]);
+
+            string fromFullPath = System.IO.Path.Combine(Startup.Configuration[Startup.RootDirectory], from);
+            string toFullPath = System.IO.Path.Combine(Startup.Configuration[Startup.RootDirectory], to);
+
+            // get the file attributes for file or directory
+            FileAttributes fromAttr = System.IO.File.GetAttributes(fromFullPath);
+            FileAttributes toAttr = System.IO.File.GetAttributes(toFullPath);
+
+            if (toAttr != FileAttributes.Directory) {
+                throw new ParameterException("目標路徑必須為目錄");
+            }
+
+            if (fromAttr == FileAttributes.Directory) {
+                DirectoryEntity.FromPath(fromFullPath).Move(toFullPath);
+            } else {
+                FileEntity.FromPath(fromFullPath).Move(toFullPath);
+            }
+        }
+
         private DriveToken VerifyToken(string token) {
             if (JwtTokenConvert.Verify<DriveToken, DefaultJwtHeader, MvcIdentityPayload>(token, new TokenValidationParameters() {
                 IssuerSigningKey = new SymmetricSecurityKey(Startup.Configuration.GetSection("JWT:SecureKey").Value.ToHash<MD5>()),
