@@ -6,13 +6,13 @@ using System.Text;
 using Newtonsoft.Json;
 
 namespace Drive.FileSystem {
-    public class DirectoryEitity : IFileSystemItem {
+    public class DirectoryEntity : IFileSystemItem {
         [JsonIgnore]
         public DirectoryInfo DirectoryInfo { get; set; }
 
         public string Type => "Directory";
 
-        private DirectoryEitity() { }
+        private DirectoryEntity() { }
 
         private string _RelativePath;
         public string RelativePath {
@@ -85,15 +85,15 @@ namespace Drive.FileSystem {
         }
 
         public IFileSystemItem[] GetChildren() {
-            var files = DirectoryInfo.GetFiles().Select(x => (IFileSystemItem)FileEitity.FromFileInfo(x));
-            var directories = DirectoryInfo.GetDirectories().Select(x => (IFileSystemItem)DirectoryEitity.FromDirectoryInfo(x));
+            var files = DirectoryInfo.GetFiles().Select(x => (IFileSystemItem)FileEntity.FromFileInfo(x));
+            var directories = DirectoryInfo.GetDirectories().Select(x => (IFileSystemItem)DirectoryEntity.FromDirectoryInfo(x));
 
             return directories.Concat(files).ToArray();
         }
 
         public IFileSystemItem[] Search(string patten) {
-            var files = DirectoryInfo.GetFiles(patten, SearchOption.AllDirectories).Select(x => (IFileSystemItem)FileEitity.FromFileInfo(x));
-            var directories = DirectoryInfo.GetDirectories(patten, SearchOption.AllDirectories).Select(x => (IFileSystemItem)DirectoryEitity.FromDirectoryInfo(x));
+            var files = DirectoryInfo.GetFiles(patten, SearchOption.AllDirectories).Select(x => (IFileSystemItem)FileEntity.FromFileInfo(x));
+            var directories = DirectoryInfo.GetDirectories(patten, SearchOption.AllDirectories).Select(x => (IFileSystemItem)DirectoryEntity.FromDirectoryInfo(x));
 
             return directories.Concat(directories).ToArray();
         }
@@ -107,22 +107,24 @@ namespace Drive.FileSystem {
             Move(target.Path);
         }
 
-        public DirectoryEitity CreateSubdirectory(string name) {
+        public DirectoryEntity CreateSubdirectory(string name) {
             return FromDirectoryInfo(DirectoryInfo.CreateSubdirectory(System.IO.Path.Combine(Path, name)));
         }
 
-        public void CreateFile(string filename, Stream stream) {
+        public IFileSystemItem CreateFile(string filename, Stream stream) {
             using (var newFile = File.Create(System.IO.Path.Combine(Path, filename))) {
                 stream.CopyTo(newFile);
             }
+
+            return FileEntity.FromPath(System.IO.Path.Combine(Path, filename));
         }
 
-        public static DirectoryEitity FromPath(string path) {
+        public static DirectoryEntity FromPath(string path) {
             return FromDirectoryInfo(new DirectoryInfo(path));
         }
 
-        public static DirectoryEitity FromDirectoryInfo(DirectoryInfo directory) {
-            var result = new DirectoryEitity();
+        public static DirectoryEntity FromDirectoryInfo(DirectoryInfo directory) {
+            var result = new DirectoryEntity();
             result.DirectoryInfo = directory;
             return result;
         }

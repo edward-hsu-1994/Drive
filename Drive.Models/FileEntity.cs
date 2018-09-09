@@ -5,13 +5,13 @@ using System.Text;
 using Newtonsoft.Json;
 
 namespace Drive.FileSystem {
-    public class FileEitity : IFileSystemItem {
+    public class FileEntity : IFileSystemItem {
         [JsonIgnore]
         public FileInfo FileInfo { get; set; }
 
         public string Type => "File";
 
-        private FileEitity() { }
+        private FileEntity() { }
 
         private string _RelativePath;
         public string RelativePath {
@@ -63,7 +63,7 @@ namespace Drive.FileSystem {
             if (level == 0) {
                 return this;
             } else {
-                return DirectoryEitity.FromDirectoryInfo(this.FileInfo.Directory).GetParent(level - 1);
+                return DirectoryEntity.FromDirectoryInfo(this.FileInfo.Directory).GetParent(level - 1);
             }
         }
 
@@ -73,19 +73,19 @@ namespace Drive.FileSystem {
         }
 
         public void MoveTo(IFileSystemItem target) {
-            if (target is DirectoryEitity) {
+            if (target is DirectoryEntity) {
                 Move(System.IO.Path.Combine(target.Path, Name));
-            } else if (target is FileEitity) {
+            } else if (target is FileEntity) {
                 Move(target.Path);
             }
         }
 
-        public static FileEitity FromPath(string path) {
+        public static FileEntity FromPath(string path) {
             return FromFileInfo(new FileInfo(path));
         }
 
-        public static FileEitity FromFileInfo(FileInfo file) {
-            var result = new FileEitity();
+        public static FileEntity FromFileInfo(FileInfo file) {
+            var result = new FileEntity();
             result.FileInfo = file;
             return result;
         }

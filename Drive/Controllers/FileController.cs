@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
@@ -8,6 +9,7 @@ using Drive.Base.Mvc;
 using Drive.FileSystem;
 using Drive.Logic;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.IdentityModel.Tokens;
@@ -27,13 +29,13 @@ namespace Drive.Controllers {
                 path = "";
             }
 
-            var rootDirectory = DirectoryEitity.FromPath(Startup.Configuration[Startup.RootDirectory]);
+            var rootDirectory = DirectoryEntity.FromPath(Startup.Configuration[Startup.RootDirectory]);
 
             string fullPath = System.IO.Path.Combine(Startup.Configuration[Startup.RootDirectory], path);
 
-            return DirectoryEitity.FromPath(fullPath).GetChildren().Select(x => {
+            return DirectoryEntity.FromPath(fullPath).GetChildren().Select(x => {
                 x.RelativePath = x.Path.Substring(rootDirectory.Path.Length);
-                if (x is FileEitity file) {
+                if (x is FileEntity file) {
                     file.DownloadUrl = $"/api/File/download?path={Uri.EscapeDataString(x.RelativePath)}&token={BuildToken(file)}";
                 }
                 return x;
@@ -59,7 +61,7 @@ namespace Drive.Controllers {
                 contentType = "application/octet-stream";
             }
 
-            var file = FileEitity.FromPath(fullPath).FileInfo.Open(
+            var file = FileEntity.FromPath(fullPath).FileInfo.Open(
                 System.IO.FileMode.Open,
                 System.IO.FileAccess.Read,
                 System.IO.FileShare.Read);
@@ -83,7 +85,7 @@ namespace Drive.Controllers {
             return null;
         }
 
-        private string BuildToken(FileEitity file) {
+        private string BuildToken(FileEntity file) {
             var tokenModel = new DriveToken() {
                 Header = new DefaultJwtHeader() {
                     Algorithm = SecurityAlgorithms.HmacSha256
