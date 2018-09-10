@@ -72,7 +72,7 @@ namespace Drive.Controllers {
         [HttpPost]
         [HttpPost("{*path}")]
         [DisableRequestSizeLimit]
-        public IEnumerable<IFileSystemItem> Upload(string path) {
+        public IEnumerable<IFileSystemItem> Upload(string path, [FromForm]IFormFileCollection files) {
             if (string.IsNullOrWhiteSpace(path)) {
                 path = "";
             }
