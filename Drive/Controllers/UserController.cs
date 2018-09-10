@@ -66,6 +66,32 @@ namespace Drive.Controllers {
             return BuildToken(user);
         }
 
+        [AllowAnonymous]
+        [HttpPost("verify")]
+        public async Task<string> Verify([FromBody]string token) {
+            var tokenInfo = VerifyToken(token);
+
+            if (tokenInfo == null) return null;
+
+            return tokenInfo.Payload.Role;
+        }
+
+        private DriveToken VerifyToken(string token) {
+            if (JwtTokenConvert.Verify<DriveToken, DefaultJwtHeader, MvcIdentityPayload>(token, new TokenValidationParameters() {
+                IssuerSigningKey = new SymmetricSecurityKey(Startup.Configuration.GetSection("JWT:SecureKey").Value.ToHash<MD5>()),
+                ValidIssuer = Startup.Configuration.GetSection("JWT:Issuer").Value, // 驗證的發行者
+                ValidAudience = Startup.Configuration.GetSection("JWT:Audience").Value, // 驗證的TOKEN接受者
+
+                ValidateIssuerSigningKey = true,
+                ValidateIssuer = true, // 檢查TOKEN發行者
+                ValidateAudience = true, // 檢查該TOKEN是否發給本服務
+                ValidateLifetime = true // 檢查TOKEN是否有效
+            }, out DriveToken tokenInfo)) {
+                return tokenInfo;
+            };
+            return null;
+        }
+
         private string BuildToken(User user) {
             var tokenModel = new DriveToken() {
                 Header = new DefaultJwtHeader() {
@@ -79,7 +105,7 @@ namespace Drive.Controllers {
                     Role = user.IsAdmin ? DriveToken.Roles.Administrator : DriveToken.Roles.Default,
                     Subject = DriveToken.Subjects.ConsoleLogin,
                     IssuedAt = DateTime.Now,
-                    Expires = DateTime.Now.AddHours(12)
+                    Expires = DateTime.Now.AddDays(7)
                 }
             };
 
