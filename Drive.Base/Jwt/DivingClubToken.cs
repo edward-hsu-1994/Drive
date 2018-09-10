@@ -33,6 +33,11 @@ namespace Drive.Base.Jwt {
             /// Download
             /// </summary>
             public const string Download = "Download";
+
+            /// <summary>
+            /// 預設
+            /// </summary>
+            public const string Default = "Default";
         }
 
         public DefaultJwtHeader Header { get; set; }
