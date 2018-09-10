@@ -88,6 +88,19 @@ namespace Drive.Controllers {
             });
         }
 
+        [HttpPost("createChild/{*path}")]
+        public IFileSystemItem CreateDirectory(string path) {
+            if (string.IsNullOrWhiteSpace(path)) {
+                path = "";
+            }
+
+            var rootDirectory = DirectoryEntity.FromPath(Startup.Configuration[Startup.RootDirectory]);
+
+            string fullPath = System.IO.Path.Combine(Startup.Configuration[Startup.RootDirectory], path);
+
+            return DirectoryEntity.FromDirectoryInfo(Directory.CreateDirectory(fullPath));
+        }
+
         [HttpPut]
         public void Move(
             [FromQuery]string from,
