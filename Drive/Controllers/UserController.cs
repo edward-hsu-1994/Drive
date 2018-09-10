@@ -18,8 +18,35 @@ namespace Drive.Controllers {
     /// <summary>
     /// 使用者控制器
     /// </summary>
+    [Authorize(Roles = DriveToken.Roles.Administrator)]
     public class UserController : BaseController {
         public UserController(DriveLogicManager manager) : base(manager) {
+        }
+
+        [HttpGet]
+        public async Task<IEnumerable<User>> List() {
+            return this.Mask(await Manager.UserLogic.ListAsync());
+        }
+
+        [HttpGet("{userId}")]
+        public async Task<User> Get([FromRoute]string userId) {
+            return await Manager.GetAsync<User>(userId);
+        }
+
+        [HttpPost]
+        public async Task<User> Create([FromBody]User user) {
+            return await Manager.CreateAsync(user);
+        }
+
+        [HttpPut]
+        public async Task<User> Update([FromBody]User user) {
+            return await Manager.UpdateAsync(user);
+        }
+
+        [HttpDelete("{userId}")]
+        public async Task Delete([FromRoute]string userId) {
+            if (Manager.List<User>(x => x.IsAdmin).Count() == 1) throw new OperatorException("至少要有一個管理者");
+            await Manager.DeleteAsync<User>(userId);
         }
 
         /// <summary>
@@ -49,7 +76,7 @@ namespace Drive.Controllers {
                     Issuer = Startup.Configuration.GetSection("JWT:Issuer").Value,
                     Audience = Startup.Configuration.GetSection("JWT:Audience").Value,
                     Name = user.Id,
-                    Role = DriveToken.Roles.Administrator,
+                    Role = user.IsAdmin ? DriveToken.Roles.Administrator : DriveToken.Roles.Default,
                     Subject = DriveToken.Subjects.ConsoleLogin,
                     IssuedAt = DateTime.Now,
                     Expires = DateTime.Now.AddHours(12)
