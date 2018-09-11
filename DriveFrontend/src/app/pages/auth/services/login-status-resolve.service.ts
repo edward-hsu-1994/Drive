@@ -3,6 +3,10 @@ import { Resolve, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { driveApi } from 'src/environments/driveApi';
+
+/**
+ * 登入狀態檢驗
+ */
 @Injectable({
   providedIn: 'root'
 })
@@ -10,6 +14,7 @@ export class LoginStatusResolveService implements Resolve<string> {
   constructor(private router: Router, private http: HttpClient) {}
 
   async resolve(): Promise<string> {
+    // 取得儲存的Token
     const token =
       localStorage.getItem('token') || sessionStorage.getItem('token');
 
@@ -17,6 +22,7 @@ export class LoginStatusResolveService implements Resolve<string> {
 
     if (environment.token) {
       try {
+        // 嘗試驗證與取得使用者Role
         const role = await this.http
           .post<string>(driveApi.user.verify, environment.token)
           .toPromise();
@@ -27,7 +33,8 @@ export class LoginStatusResolveService implements Resolve<string> {
 
         environment.role = role;
 
-        this.router.navigateByUrl('/file');
+        // 有效Token導引至檔案頁
+        this.router.navigateByUrl('/manage/file');
       } catch {
         return '登入驗證失敗，請檢查網路';
       }
