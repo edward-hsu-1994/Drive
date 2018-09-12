@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostBinding } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -9,6 +9,9 @@ import { ActivatedRoute } from '@angular/router';
 export class FileBrowserComponent implements OnInit {
   segments = [];
   paths = [];
+
+  @HostBinding('class.content-container')
+  true;
 
   constructor(private route: ActivatedRoute) {
     route.url.subscribe(x => {

@@ -1,2 +1,24 @@
-<app-breadcrumb [segments]="segments" [paths]="paths"></app-breadcrumb>
-<app-directory-tree></app-directory-tree>
+<div class="content-area" style="padding:0">
+  <div class="breadcrumb-area">
+    <label>路徑:</label>
+    <app-breadcrumb [segments]="segments" [paths]="paths"></app-breadcrumb>
+  </div>
+  <div class="filelist">123</div>
+</div>
+<nav class="sidenav">
+  <section class="sidenav-content">
+    <div style="padding: 5px;">
+      <div class="btn-group btn-primary" style="width:100%">
+        <button class="btn" style="width:50%">
+          <clr-icon shape="plus"></clr-icon>
+          <span class="clr-icon-title">新增目錄</span>
+        </button>
+        <button class="btn" style="width:50%">
+          <clr-icon shape="upload"></clr-icon>
+          <span class="clr-icon-title">上傳檔案</span>
+        </button>
+      </div>
+    </div>
+    <app-directory-tree></app-directory-tree>
+  </section>
+</nav>

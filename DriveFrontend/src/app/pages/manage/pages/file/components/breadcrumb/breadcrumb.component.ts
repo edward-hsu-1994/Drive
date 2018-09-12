@@ -7,10 +7,10 @@ import { Component, OnInit, Input, Output } from '@angular/core';
 })
 export class BreadcrumbComponent implements OnInit {
   @Input()
-  segments: [];
+  segments = [];
 
   @Input()
-  paths: [];
+  paths = [];
 
   constructor() {}
 
