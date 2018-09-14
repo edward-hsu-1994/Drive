@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Drive.FileSystem {
     public enum FileSystemItemType {
-        Directory,
-        File
+        Directory = 0,
+        File = 1
     }
 }

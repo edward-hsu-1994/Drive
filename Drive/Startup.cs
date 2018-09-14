@@ -90,12 +90,14 @@ namespace Drive {
                     ["bearer"] = new string[] { },
                     ["basic"] = new string[] { }
                 });
+
                 foreach (var file in Directory.GetFiles(
                     PlatformServices.Default.Application.ApplicationBasePath,
                     "*.xml")) {
                     options.IncludeXmlComments(file);
                 }
 
+                options.DescribeAllEnumsAsStrings();
                 options.OperationFilter<FormFileOperationFilter>();
                 options.OperationFilter<AuthorizeOperationFilter>();
             });
