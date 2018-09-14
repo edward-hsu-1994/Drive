@@ -38,8 +38,9 @@ namespace Drive.Controllers {
 
             string fullPath = System.IO.Path.Combine(Startup.Configuration[Startup.RootDirectory], path);
 
-            return DirectoryEntity.FromPath(fullPath).GetChildren()
-                .Where(x => !type.HasValue || x.Type == type.Value)
+            return DirectoryEntity.FromPath(fullPath).GetChildren() // 取得指定目錄下所有檔案項目
+                .OrderBy(x => x.Type) // 目錄優先
+                .Where(x => !type.HasValue || x.Type == type.Value) // 類型過濾
                 .Select(x => {
                     x.RelativePath = x.Path.Substring(rootDirectory.Path.Length);
                     if (x is FileEntity file) {
