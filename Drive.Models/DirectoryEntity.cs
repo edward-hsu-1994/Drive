@@ -10,7 +10,7 @@ namespace Drive.FileSystem {
         [JsonIgnore]
         public DirectoryInfo DirectoryInfo { get; set; }
 
-        public string Type => "Directory";
+        public FileSystemItemType Type => FileSystemItemType.Directory;
 
         private DirectoryEntity() { }
 
