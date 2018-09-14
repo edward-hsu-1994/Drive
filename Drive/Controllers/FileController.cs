@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.IdentityModel.Tokens;
+using XWidget.Linq;
 using XWidget.Web.Exceptions;
 using XWidget.Web.Jwt;
 
@@ -24,7 +25,11 @@ namespace Drive.Controllers {
 
         [HttpGet]
         [HttpGet("{*path}")]
-        public IEnumerable<IFileSystemItem> List(string path) {
+        public Paging<IFileSystemItem> List(
+            string path,
+            FileSystemItemType? type = FileSystemItemType.File,
+            int skip = 0,
+            int take = 10) {
             if (string.IsNullOrWhiteSpace(path)) {
                 path = "";
             }
@@ -33,13 +38,15 @@ namespace Drive.Controllers {
 
             string fullPath = System.IO.Path.Combine(Startup.Configuration[Startup.RootDirectory], path);
 
-            return DirectoryEntity.FromPath(fullPath).GetChildren().Select(x => {
-                x.RelativePath = x.Path.Substring(rootDirectory.Path.Length);
-                if (x is FileEntity file) {
-                    file.DownloadUrl = $"/api/File/download?path={Uri.EscapeDataString(x.RelativePath)}&token={BuildToken(file)}";
-                }
-                return x;
-            });
+            return DirectoryEntity.FromPath(fullPath).GetChildren()
+                .Where(x => !type.HasValue || x.Type == type.Value)
+                .Select(x => {
+                    x.RelativePath = x.Path.Substring(rootDirectory.Path.Length);
+                    if (x is FileEntity file) {
+                        file.DownloadUrl = $"/api/File/download?path={Uri.EscapeDataString(x.RelativePath)}&token={BuildToken(file)}";
+                    }
+                    return x;
+                }).AsPaging(skip, take);
         }
 
         [AllowAnonymous]
@@ -55,18 +62,14 @@ namespace Drive.Controllers {
 
             string fullPath = System.IO.Path.Combine(Startup.Configuration[Startup.RootDirectory], path);
 
-            var provider = new FileExtensionContentTypeProvider();
+            var fileEntity = FileEntity.FromPath(fullPath);
 
-            if (!provider.TryGetContentType(path, out string contentType)) {
-                contentType = "application/octet-stream";
-            }
-
-            var file = FileEntity.FromPath(fullPath).FileInfo.Open(
+            var file = fileEntity.FileInfo.Open(
                 System.IO.FileMode.Open,
                 System.IO.FileAccess.Read,
                 System.IO.FileShare.Read);
 
-            return File(file, contentType, System.IO.Path.GetFileName(path), true);
+            return File(file, fileEntity.ContentType, System.IO.Path.GetFileName(path), true);
         }
 
         [HttpPost]
