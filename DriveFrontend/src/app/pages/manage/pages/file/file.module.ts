@@ -6,9 +6,10 @@ import { FileBrowserComponent } from './components/file-browser/file-browser.com
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
 import { DirectoryTreeComponent } from './components/directory-tree/directory-tree.component';
 import { ClarityModule } from '@clr/angular';
+import { DragToSelectModule } from 'ngx-drag-to-select';
 
 @NgModule({
-  imports: [CommonModule, FileRoutingModule, ClarityModule],
+  imports: [CommonModule, FileRoutingModule, ClarityModule, DragToSelectModule],
   declarations: [
     FileBrowserComponent,
     BreadcrumbComponent,

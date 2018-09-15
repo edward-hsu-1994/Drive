@@ -26,4 +26,10 @@
   max-width: 100%;
   border-top: 1px solid transparent;
   height: 100%;
+  padding: 10px;
+}
+
+.filelist > * {
+  width: calc(100% - 2px);
+  height: 100%;
 }
