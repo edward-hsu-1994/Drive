@@ -23,6 +23,14 @@ namespace Drive.Controllers {
 
         }
 
+        /// <summary>
+        /// 取得指令路徑下的檔案列表
+        /// </summary>
+        /// <param name="path">路徑</param>
+        /// <param name="type">類型過濾</param>
+        /// <param name="skip">起始索引</param>
+        /// <param name="take">取得筆數</param>
+        /// <returns>檔案列表分頁結果</returns>
         [HttpGet]
         [HttpGet("{*path}")]
         public Paging<IFileSystemItem> List(
@@ -50,6 +58,12 @@ namespace Drive.Controllers {
                 }).AsPaging(skip, take);
         }
 
+        /// <summary>
+        /// 下載指定路徑檔案
+        /// </summary>
+        /// <param name="path">路徑</param>
+        /// <param name="token">存取權杖</param>
+        /// <returns>檔案流</returns>
         [AllowAnonymous]
         [HttpGet("download")]
         public IActionResult Download(
@@ -73,6 +87,12 @@ namespace Drive.Controllers {
             return File(file, fileEntity.ContentType, System.IO.Path.GetFileName(path), true);
         }
 
+        /// <summary>
+        /// 在指定路徑上傳檔案
+        /// </summary>
+        /// <param name="path">路徑</param>
+        /// <param name="files">檔案集合</param>
+        /// <returns>上傳結果</returns>
         [HttpPost]
         [HttpPost("{*path}")]
         [DisableRequestSizeLimit]
@@ -92,6 +112,11 @@ namespace Drive.Controllers {
             });
         }
 
+        /// <summary>
+        /// 在指定路徑建立目錄
+        /// </summary>
+        /// <param name="path">路徑</param>
+        /// <returns>建立結果</returns>
         [HttpPost("createChild/{*path}")]
         public IFileSystemItem CreateDirectory(string path) {
             if (string.IsNullOrWhiteSpace(path)) {
@@ -105,6 +130,11 @@ namespace Drive.Controllers {
             return DirectoryEntity.FromDirectoryInfo(Directory.CreateDirectory(fullPath));
         }
 
+        /// <summary>
+        /// 搬移檔案或目錄
+        /// </summary>
+        /// <param name="from">來源路徑</param>
+        /// <param name="to">目標路徑</param>
         [HttpPut]
         public void Move(
             [FromQuery]string from,
@@ -136,6 +166,10 @@ namespace Drive.Controllers {
             }
         }
 
+        /// <summary>
+        /// 刪除指定路徑的檔案或目錄
+        /// </summary>
+        /// <param name="paths">路徑集合</param>
         [HttpPut("delete")]
         public void Delete([FromBody]IEnumerable<string> paths) {
             foreach (var path in paths) {
