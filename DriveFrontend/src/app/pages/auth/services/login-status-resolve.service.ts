@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Resolve, Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { driveApi } from 'src/environments/driveApi';
 
@@ -24,7 +24,13 @@ export class LoginStatusResolveService implements Resolve<string> {
       try {
         // 嘗試驗證與取得使用者Role
         const role = await this.http
-          .post<string>(driveApi.user.verify, environment.token)
+          .post<string>(
+            driveApi.user.verify,
+            JSON.stringify(environment.token),
+            {
+              headers: new HttpHeaders().set('Content-Type', 'application/json')
+            }
+          )
           .toPromise();
 
         if (!role) {

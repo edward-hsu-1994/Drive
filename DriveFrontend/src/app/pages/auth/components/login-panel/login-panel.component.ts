@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { LoginService } from '../../services/login.service';
+import { environment } from '../../../../../environments/environment';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login-panel',
@@ -8,9 +11,34 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class LoginPanelComponent implements OnInit {
   error: string = null;
-  constructor(private route: ActivatedRoute) {
+
+  loginForm = new FormGroup({
+    id: new FormControl('', Validators.required),
+    password: new FormControl('', Validators.required),
+    remember: new FormControl('')
+  });
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private loginService: LoginService
+  ) {
     this.error = route.snapshot.data.tokenCheck;
   }
 
   ngOnInit() {}
+
+  login() {
+    console.log(this.loginForm);
+    this.loginService
+      .getToken(this.loginForm.value.id, this.loginForm.value.password)
+      .subscribe(x => {
+        environment.token = x;
+        if (this.loginForm.value.remember) {
+          localStorage.setItem('token', <string>x);
+        }
+
+        this.router.navigateByUrl('/manage');
+      });
+    return false;
+  }
 }
