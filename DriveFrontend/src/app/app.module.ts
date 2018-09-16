@@ -7,6 +7,8 @@ import { ClarityModule } from '@clr/angular';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DragToSelectModule } from 'ngx-drag-to-select';
+import { ContextMenuModule } from 'ngx-contextmenu';
+import { LoadingModule } from 'ngx-loading';
 
 @NgModule({
   declarations: [AppComponent],
@@ -16,7 +18,9 @@ import { DragToSelectModule } from 'ngx-drag-to-select';
     ClarityModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    DragToSelectModule.forRoot()
+    DragToSelectModule.forRoot(),
+    ContextMenuModule.forRoot(),
+    LoadingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
