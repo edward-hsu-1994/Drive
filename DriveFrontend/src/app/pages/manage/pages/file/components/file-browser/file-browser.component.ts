@@ -220,6 +220,7 @@ export class FileBrowserComponent implements OnInit, AfterViewInit {
     });
   }
   createDirectoryAction() {
+    this.createDirectoryForm.reset();
     this.showCreateDirectoryDialog = true;
   }
   createDirectory() {
