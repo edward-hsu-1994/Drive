@@ -32,13 +32,20 @@ export class LoginPanelComponent implements OnInit {
     this.loginService
       .getToken(this.loginForm.value.id, this.loginForm.value.password)
       .subscribe(x => {
-        environment.token = x;
+        sessionStorage.setItem('token', x);
         if (this.loginForm.value.remember) {
-          localStorage.setItem('token', <string>x);
+          localStorage.setItem('token', x);
         }
-
         this.router.navigateByUrl('/manage');
       });
     return false;
+  }
+
+  getUserIdFromToken(token: string): string {
+    token = token.replace('bearer ', '');
+
+    return JSON.parse(atob(token.split('.')[1]))[
+      'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'
+    ];
   }
 }

@@ -18,26 +18,21 @@ export class LoginStatusResolveService implements Resolve<string> {
     const token =
       localStorage.getItem('token') || sessionStorage.getItem('token');
 
-    environment.token = token;
-
-    if (environment.token) {
+    if (token) {
       try {
         // 嘗試驗證與取得使用者Role
         const role = await this.http
-          .post<string>(
-            driveApi.user.verify,
-            JSON.stringify(environment.token),
-            {
-              headers: new HttpHeaders().set('Content-Type', 'application/json')
-            }
-          )
+          .post<string>(driveApi.user.verify, JSON.stringify(token), {
+            headers: new HttpHeaders().set('Content-Type', 'application/json')
+          })
           .toPromise();
 
         if (!role) {
           return '登入過期';
         }
 
-        environment.role = role;
+        sessionStorage.setItem('role', role);
+        localStorage.setItem('role', role);
 
         // 有效Token導引至檔案頁
         this.router.navigateByUrl('/manage/file');
