@@ -10,3 +10,7 @@
   color: #333;
   white-space: nowrap;
 }
+.dropdown-menu > li > a:hover {
+  background-color: #ccc;
+  text-decoration: none;
+}
