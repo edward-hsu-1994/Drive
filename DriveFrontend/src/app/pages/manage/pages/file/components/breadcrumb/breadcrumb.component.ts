@@ -12,6 +12,9 @@ export class BreadcrumbComponent implements OnInit {
   @Input()
   paths = [];
 
+  @Input()
+  query;
+
   constructor() {}
 
   ngOnInit() {}
