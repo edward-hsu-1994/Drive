@@ -8,6 +8,7 @@ import { DirectoryTreeComponent } from './components/directory-tree/directory-tr
 import { ClarityModule } from '@clr/angular';
 import { DragToSelectModule } from 'ngx-drag-to-select';
 import { ReactiveFormsModule } from '@angular/forms';
+import { NgMarqueeModule } from 'ng-marquee';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     FileRoutingModule,
     ClarityModule,
     DragToSelectModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgMarqueeModule
   ],
   declarations: [
     FileBrowserComponent,
