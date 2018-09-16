@@ -1,1 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
+@import 'https://fonts.googleapis.com/icon?family=Material+Icons';
+
+.dropdown-menu > li > a {
+  display: block;
+  padding: 3px 20px;
+  clear: both;
+  font-weight: 400;
+  line-height: 1.42857143;
+  color: #333;
+  white-space: nowrap;
+}
+.dropdown-menu > li > a:hover {
+  background-color: #ccc;
+  text-decoration: none;
+}

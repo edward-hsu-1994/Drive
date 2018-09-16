@@ -13,6 +13,6 @@ export const driveApi = {
     upload: 'api/File/{path}',
     createChild: 'api/File/createChild/{path}',
     move: 'api/File',
-    delete: 'api/File/{path}'
+    delete: 'api/File/delete'
   }
 };

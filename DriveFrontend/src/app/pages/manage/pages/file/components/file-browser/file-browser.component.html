@@ -2,18 +2,41 @@
   <div class="breadcrumb-area">
     <label>路徑:</label>
     <app-breadcrumb [segments]="segments" [paths]="paths" [query]="query"></app-breadcrumb>
+    <span style="float:right">
+      <button class="btn" (click)="clearSelect()" *ngIf="selectedFilesCount">
+        清除選取
+        <span>(已選取 {{selectedFilesCount}} 個項目)</span>
+      </button>
+      <button class="btn" (click)="selectAll()" *ngIf="!selectedFilesCount">
+        全選
+      </button>
+      <button class="btn btn-danger-outline" (click)="deleteSelect()" [disabled]="selectedFiles.length === 0">
+        刪除
+      </button>
+    </span>
   </div>
   <div class="filelist" #fileListContainer>
-    <dts-select-container #container="dts-select-container">
+    <dts-select-container #container="dts-select-container" [(selectedItems)]="selectedFiles">
       <div class="row">
         <div *ngFor="let item of filelist" class="col-lg-2 col-md-4 col-sm-12 col-xs-12">
-          <div class="card">
+          <div [dtsSelectItem]="item" [contextMenu]="basicMenu" [contextMenuSubject]="item" class="card" style="cursor:pointer"
+            (click)="fileItemActionButton(item)" (dblclick)="openOrDownload(item)" (mouseenter)="item.mouseon=true"
+            (mouseleave)="item.mouseon=false">
             <div class="card-img">
-              <img src="https://www.taiwan.net.tw/resources/images/Attractions/0001095.jpg">
+              <clr-icon *ngIf="isLoadMore(item)" shape="ellipsis-horizontal" style="width:100%;height: 100%;"></clr-icon>
+              <clr-icon *ngIf="isParent(item)" shape="undo" style="width:100%;height: 100%;"></clr-icon>
+              <clr-icon *ngIf="isDirectory(item)" shape="folder" style="width:100%;height: 100%;"></clr-icon>
+              <clr-icon *ngIf="!isDirectory(item) && !isImage(item) && !isParent(item) && !isLoadMore(item)" shape="file"
+                style="width:100%;height: 100%;"></clr-icon>
+              <div *ngIf="isImage(item)" [style.backgroundImage]="'url(' + item.downloadUrl + ')'" style="background-size: cover;padding-top: 100%;"></div>
             </div>
             <div class="card-block">
-              <p class="card-text fileTitle">
-                {{item.name}}
+              <p class="card-text fileTitle" *ngIf="isParent(item)">
+                回上層
+              </p>
+              <p class="card-text fileTitle" *ngIf="!isParent(item)">
+                <ng-marquee duration="3" *ngIf="item.mouseon">{{item.name}}</ng-marquee>
+                <ng-container *ngIf="!item.mouseon">{{item.name}}</ng-container>
               </p>
             </div>
           </div>
@@ -39,3 +62,40 @@
     <app-directory-tree></app-directory-tree>
   </section>
 </nav>
+<clr-modal [(clrModalOpen)]="showDeleteDialog" [clrModalClosable]="false">
+  <h3 class="modal-title">刪除檔案</h3>
+  <div class="modal-body">
+    <p>您確定將選擇的 {{selectedFilesCount}} 個項目刪除嗎?刪除後將無法恢復。</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="showDeleteDialog = false">取消</button>
+    <button type="button" class="btn btn-danger" (click)="delete()">確定</button>
+  </div>
+</clr-modal>
+<clr-modal [(clrModalOpen)]="showRenameDialog" [clrModalClosable]="false">
+  <h3 class="modal-title">重新命名</h3>
+  <div class="modal-body">
+    <form clrForm [formGroup]="renameForm" (ngSubmit)="rename(renameForm.value.name)">
+      <clr-input-container>
+        <label>新名稱</label>
+        <input clrInput placeholder="新名稱" formControlName="name" />
+      </clr-input-container>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="showRenameDialog = false">取消</button>
+    <button type="button" class="btn btn-danger" [disabled]="!renameForm.valid" (click)="rename(renameForm.value.name)">確定</button>
+  </div>
+</clr-modal>
+<context-menu>
+  <ng-template contextMenuItem (execute)="renameAction($event.item)">
+    重新命名
+  </ng-template>
+  <ng-template contextMenuItem (execute)="move($event.item)">
+    搬移
+  </ng-template>
+  <ng-template contextMenuItem divider="true"></ng-template>
+  <ng-template contextMenuItem (execute)="deleteSelect()">
+    刪除
+  </ng-template>
+</context-menu>

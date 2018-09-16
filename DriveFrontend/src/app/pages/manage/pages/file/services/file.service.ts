@@ -17,4 +17,12 @@ export class FileService {
       take
     });
   }
+
+  public delete(paths: string[]) {
+    return this.http.put(driveApi.file.delete, {}, paths, {});
+  }
+
+  public move(from: string, to: string) {
+    return this.http.put(driveApi.file.move, { from: from, to: to }, {}, {});
+  }
 }

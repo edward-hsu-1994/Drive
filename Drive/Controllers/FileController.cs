@@ -54,7 +54,7 @@ namespace Drive.Controllers {
                 .OrderBy(x => x.Type) // 目錄優先
                 .Where(x => !type.HasValue || x.Type == type.Value) // 類型過濾
                 .Select(x => {
-                    x.RelativePath = x.Path.Substring(rootDirectory.Path.Length);
+                    x.RelativePath = x.Path.Substring(rootDirectory.Path.Length).Replace('\\', '/');
                     if (x is FileEntity file) {
                         file.DownloadUrl = $"{Request.Scheme}://{Request.Host}/api/File/download?path={Uri.EscapeDataString(x.RelativePath)}&token={Uri.EscapeDataString(BuildToken(file))}";
                     }
@@ -172,11 +172,6 @@ namespace Drive.Controllers {
 
             // get the file attributes for file or directory
             FileAttributes fromAttr = System.IO.File.GetAttributes(fromFullPath);
-            FileAttributes toAttr = System.IO.File.GetAttributes(toFullPath);
-
-            if (toAttr != FileAttributes.Directory) {
-                throw new ParameterException("目標路徑必須為目錄");
-            }
 
             if (fromAttr == FileAttributes.Directory) {
                 DirectoryEntity.FromPath(fromFullPath).Move(toFullPath);

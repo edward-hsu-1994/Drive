@@ -18,9 +18,9 @@
         <clr-icon shape="folder"></clr-icon>
       </a>
     </div>
-    <form [formGroup]="searchForm" class="search">
-      <label for="search_input" (click)="search($event)">
-        <input id="search_input" formControlName="query" type="text" placeholder="搜尋檔案或目錄...">
+    <form [formGroup]="searchForm" (ngSubmit)="search()" class="search">
+      <label for="search_input">
+        <input id="search_input" formControlName="query" type="text" placeholder="搜尋檔案或目錄..." [disabled]="!searchForm.valid">
       </label>
     </form>
     <!-- #endregion -->
