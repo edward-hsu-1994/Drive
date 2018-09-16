@@ -3,16 +3,20 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 using Drive.Base.Jwt;
 using Drive.Base.Mvc;
 using Drive.FileSystem;
 using Drive.Logic;
+using Drive.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.IdentityModel.Tokens;
+using XWidget.Extensions;
 using XWidget.Linq;
 using XWidget.Web.Exceptions;
 using XWidget.Web.Jwt;
@@ -33,9 +37,9 @@ namespace Drive.Controllers {
         /// <returns>檔案列表分頁結果</returns>
         [HttpGet]
         [HttpGet("{*path}")]
-        public Paging<IFileSystemItem> List(
+        public PagingWithUrl<IFileSystemItem> List(
             string path,
-            FileSystemItemType? type = FileSystemItemType.File,
+            FileSystemItemType? type,
             int skip = 0,
             int take = 10) {
             if (string.IsNullOrWhiteSpace(path)) {
@@ -46,16 +50,31 @@ namespace Drive.Controllers {
 
             string fullPath = System.IO.Path.Combine(Startup.Configuration[Startup.RootDirectory], path);
 
-            return DirectoryEntity.FromPath(fullPath).GetChildren() // 取得指定目錄下所有檔案項目
+            var fullResult = DirectoryEntity.FromPath(fullPath).GetChildren() // 取得指定目錄下所有檔案項目
                 .OrderBy(x => x.Type) // 目錄優先
                 .Where(x => !type.HasValue || x.Type == type.Value) // 類型過濾
                 .Select(x => {
                     x.RelativePath = x.Path.Substring(rootDirectory.Path.Length);
                     if (x is FileEntity file) {
-                        file.DownloadUrl = $"/api/File/download?path={Uri.EscapeDataString(x.RelativePath)}&token={BuildToken(file)}";
+                        file.DownloadUrl = $"{Request.Scheme}://{Request.Host}/api/File/download?path={Uri.EscapeDataString(x.RelativePath)}&token={Uri.EscapeDataString(BuildToken(file))}";
                     }
                     return x;
-                }).AsPaging(skip, take);
+                });
+
+            return new PagingWithUrl<IFileSystemItem>(fullResult, skip, take).Process(x => {
+                var builder = new UriBuilder(Request.GetDisplayUrl());
+
+                var queryBuilder = new QueryBuilder();
+                if (type.HasValue) {
+                    queryBuilder.Add("type", type.Value.ToString());
+                }
+                queryBuilder.Add("skip", (skip + take).ToString());
+                queryBuilder.Add("take", take.ToString());
+
+                builder.Query = queryBuilder.ToString();
+
+                x.Next = builder.ToString();
+            });
         }
 
         /// <summary>
