@@ -1,4 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  ChangeDetectorRef,
+  AfterViewInit,
+  AfterContentChecked
+} from '@angular/core';
+import { FileNode } from '../../models/fileNode';
+import { ClrLoading, LoadingListener } from '@clr/angular';
+import { FileService } from '../../services/file.service';
 
 @Component({
   selector: 'app-directory-tree',
@@ -6,8 +16,24 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./directory-tree.component.css']
 })
 export class DirectoryTreeComponent implements OnInit {
-  expanded = true;
-  constructor() {}
+  @Input()
+  children: FileNode[] = [];
 
-  ngOnInit() {}
+  @Input()
+  parent: FileNode = null;
+
+  @Input()
+  expanded = false;
+
+  constructor(private fileService: FileService) {}
+
+  ngOnInit() {
+    if (this.parent) {
+      this.fileService
+        .list(this.parent.relativePath, 'Directory', 0, 2147483647)
+        .subscribe(x => {
+          this.children = x['result'];
+        });
+    }
+  }
 }

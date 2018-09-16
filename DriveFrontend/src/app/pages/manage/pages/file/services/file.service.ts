@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { driveApi } from '../../../../../../environments/driveApi';
 import { environment } from '../../../../../../environments/environment.prod';
 import { HttpClientBase } from '../../../../../services/http-client-base.service';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -10,9 +11,15 @@ import { HttpClientBase } from '../../../../../services/http-client-base.service
 export class FileService {
   constructor(public http: HttpClientBase) {}
 
-  public list(path: string | string[], skip: number = 0, take: number = 10) {
+  public list(
+    path: string | string[],
+    type: 'Directory' | 'File' | null = null,
+    skip: number = 0,
+    take: number = 10
+  ): Observable<any[]> {
     return this.http.get(driveApi.file.list, {
       path,
+      type,
       skip,
       take
     });

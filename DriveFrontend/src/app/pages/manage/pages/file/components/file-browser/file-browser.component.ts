@@ -13,6 +13,7 @@ import { SelectContainerComponent } from 'ngx-drag-to-select';
 import { fromEvent } from 'rxjs';
 import { ContextMenuComponent } from 'ngx-contextmenu';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FileNode } from '../../models/fileNode';
 
 @Component({
   selector: 'app-file-browser',
@@ -37,6 +38,8 @@ export class FileBrowserComponent implements OnInit, AfterViewInit {
   });
 
   renameTarget;
+
+  directories: FileNode[] = [];
 
   get selectedFilesCount() {
     return this.selectedFiles.filter(
@@ -65,8 +68,10 @@ export class FileBrowserComponent implements OnInit, AfterViewInit {
     private route: ActivatedRoute,
     private router: Router,
     private fileService: FileService
-  ) {
-    route.url.subscribe(x => {
+  ) {}
+
+  ngOnInit() {
+    this.route.url.subscribe(x => {
       this.segments = ['root'].concat(x.map(y => y.path));
       this.paths = [''].concat(this.segments.slice(1));
 
@@ -76,7 +81,7 @@ export class FileBrowserComponent implements OnInit, AfterViewInit {
         this.load();
       }
     });
-    route.queryParams.subscribe(x => {
+    this.route.queryParams.subscribe(x => {
       const old_query = this.query;
 
       this.query = this.route.snapshot.queryParams.q;
@@ -85,14 +90,19 @@ export class FileBrowserComponent implements OnInit, AfterViewInit {
         this.load();
       }
     });
+    this.loadDirectoryList('');
   }
-
-  ngOnInit() {}
 
   ngAfterViewInit() {
     fromEvent(this.fileListContainer.nativeElement, 'scroll').subscribe(x => {
       this.fileListSelector.update();
     });
+  }
+
+  loadDirectoryList(path: string) {
+    this.directories = [
+      { relativePath: '/', name: 'root', children: [], isRoot: true }
+    ];
   }
 
   load() {

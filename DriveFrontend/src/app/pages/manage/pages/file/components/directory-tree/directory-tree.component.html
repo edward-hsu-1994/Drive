@@ -1,8 +1,10 @@
-<clr-tree-node>
-  {{expanded ? "I am expanded" : "I am collapsed"}}
-  <ng-template [(clrIfExpanded)]="expanded">
-    <clr-tree-node>
-      Child Tree Node
-    </clr-tree-node>
-  </ng-template>
-</clr-tree-node>
+<ng-container>
+  <clr-tree-node *ngFor="let child of children">
+    <a routerLink="/manage/file/{{child.relativePath}}" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+      <clr-icon shape="folder"></clr-icon>{{child.name}}
+    </a>
+    <ng-template [clrIfExpanded]="parent === null">
+      <app-directory-tree [parent]="child" clrLoading="true"></app-directory-tree>
+    </ng-template>
+  </clr-tree-node>
+</ng-container>

@@ -59,7 +59,7 @@
         </button>
       </div>
     </div>
-    <app-directory-tree></app-directory-tree>
+    <app-directory-tree [(children)]="directories"></app-directory-tree>
   </section>
 </nav>
 <clr-modal [(clrModalOpen)]="showDeleteDialog" [clrModalClosable]="false">

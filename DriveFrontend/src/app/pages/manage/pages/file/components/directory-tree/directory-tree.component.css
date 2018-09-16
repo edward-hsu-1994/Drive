@@ -1,0 +1,8 @@
+a {
+  text-decoration: none;
+  width: 100%;
+  color: black;
+}
+.active {
+  background-color: #ccc;
+}
