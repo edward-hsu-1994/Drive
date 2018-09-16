@@ -26,7 +26,16 @@ export class FileBrowserComponent implements OnInit, AfterViewInit {
 
   filelist = [];
   selectedFiles = [];
+
+  get selectedFilesCount() {
+    return this.selectedFiles.filter(
+      x => x.type !== 'Parent' && x.type !== 'LoadMore'
+    ).length;
+  }
+
   nextlistUrl = null;
+
+  showDeleteDialog = false;
 
   @ViewChild(SelectContainerComponent)
   fileListSelector: SelectContainerComponent;
@@ -109,29 +118,22 @@ export class FileBrowserComponent implements OnInit, AfterViewInit {
     });
   }
 
-  goToDirectory(item) {
-    if (
-      item.type !== 'Directory' &&
-      item.type !== 'Parent' &&
-      item.type !== 'LoadMore'
-    ) {
-      return;
-    }
-
-    if (item.type === 'LoadMore') {
+  openOrDownload(item) {
+    if (item.type === 'Directory' || item.type === 'Parent') {
+      this.router.navigate([item.name], { relativeTo: this.route });
+    } else if (item.type === 'LoadMore') {
       this.loadMore();
     } else {
-      this.router.navigate([item.name], {
-        relativeTo: this.route
-      });
+      window.open(item.downloadUrl);
     }
   }
 
-  download(item) {
-    if (item.type !== 'File') {
-      return;
+  fileItemActionButton(item) {
+    if (item.type === 'LoadMore') {
+      this.loadMore();
+    } else if (item.type === 'Parent') {
+      this.router.navigate([item.name], { relativeTo: this.route });
     }
-    window.open(item.downloadUrl);
   }
 
   isLoadMore(item) {
@@ -145,5 +147,31 @@ export class FileBrowserComponent implements OnInit, AfterViewInit {
   }
   isImage(item) {
     return item.type === 'File' && item.contentType.indexOf('image') === 0;
+  }
+
+  selectAll() {
+    this.fileListSelector.selectAll();
+  }
+
+  clearSelect() {
+    this.fileListSelector.clearSelection();
+  }
+
+  deleteSelect() {
+    if (this.selectedFiles.length === 0) {
+      return;
+    }
+    this.showDeleteDialog = true;
+  }
+
+  delete() {
+    const targets = this.selectedFiles
+      .filter(x => x.type !== 'Parent' && x.type !== 'LoadMore')
+      .map(x => x.relativePath);
+
+    this.fileService.delete(targets).subscribe(x => {
+      this.load();
+      this.showDeleteDialog = false;
+    });
   }
 }
