@@ -1,0 +1,7 @@
+<span>
+  <ng-container *ngFor="let segment of segments; let i = index">
+    <span *ngIf="i" style="margin-left:10px;margin-right:10px;">/</span>
+    <a routerLink="/manage/file/{{paths[i]}}">{{segment}}</a>
+  </ng-container>
+  <span *ngIf="query">搜尋: {{query}}</span>
+</span>

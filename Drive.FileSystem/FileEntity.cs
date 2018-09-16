@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Microsoft.AspNetCore.StaticFiles;
 using Newtonsoft.Json;
 
 namespace Drive.FileSystem {
@@ -9,7 +10,17 @@ namespace Drive.FileSystem {
         [JsonIgnore]
         public FileInfo FileInfo { get; set; }
 
-        public string Type => "File";
+        public FileSystemItemType Type => FileSystemItemType.File;
+
+        public string ContentType {
+            get {
+                var provider = new FileExtensionContentTypeProvider();
+                if (provider.TryGetContentType(FileInfo.FullName, out string contentType)) {
+                    return contentType;
+                }
+                return "application/octet-stream";
+            }
+        }
 
         private FileEntity() { }
 

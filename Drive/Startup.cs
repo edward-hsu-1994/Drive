@@ -75,7 +75,15 @@ namespace Drive {
 
             // 註冊Swagger產生器
             services.AddSwaggerGen(options => {
-                options.SwaggerDoc("v1", new Info { Title = "Drive API", Version = "v1" });
+                options.SwaggerDoc("v1", new Info {
+                    Title = "Drive API",
+                    Version = "v1",
+                    Description = "簡易的雲端硬碟應用",
+                    License = new License() {
+                        Name = "MIT",
+                        Url = "https://github.com/XuPeiYao/Drive/blob/master/LICENSE"
+                    }
+                });
 
                 options.AddSecurityDefinition(
                    "bearer",
@@ -90,12 +98,14 @@ namespace Drive {
                     ["bearer"] = new string[] { },
                     ["basic"] = new string[] { }
                 });
+
                 foreach (var file in Directory.GetFiles(
                     PlatformServices.Default.Application.ApplicationBasePath,
                     "*.xml")) {
                     options.IncludeXmlComments(file);
                 }
 
+                options.DescribeAllEnumsAsStrings();
                 options.OperationFilter<FormFileOperationFilter>();
                 options.OperationFilter<AuthorizeOperationFilter>();
             });

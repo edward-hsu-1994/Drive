@@ -1,0 +1,49 @@
+.sidenav > header {
+  background: initial;
+}
+
+.content-area {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.breadcrumb-area {
+  flex: 0 0 46px;
+  position: relative;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+.breadcrumb-area > label {
+  margin-right: 5px;
+}
+
+.filelist {
+  flex: 1 1 auto;
+  overflow-y: scroll;
+  width: 100%;
+  max-width: 100%;
+  border-top: 1px solid transparent;
+  height: 100%;
+  padding: 10px;
+}
+
+.filelist > * {
+  width: calc(100% - 2px);
+  height: 100%;
+
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
+
+.fileTitle {
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+}

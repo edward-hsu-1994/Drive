@@ -1,0 +1,23 @@
+<div class="login-wrapper">
+  <form class="login" [formGroup]="loginForm" (ngSubmit)="login()">
+    <section class="title">
+      <h3 class="welcome">歡迎使用</h3>
+      Drive
+    </section>
+    <div class="login-group">
+      <input class="username" formControlName="id" type="text" placeholder="帳號">
+      <input class="password" formControlName="password" type="password" placeholder="密碼">
+      <div class="checkbox">
+        <input type="checkbox" id="rememberme" formControlName="remember">
+        <label for="rememberme">
+          維持登入7天
+        </label>
+      </div>
+      <div *ngIf="error" class="error active">
+        {{error}}
+      </div>
+      <button type="submit" class="btn btn-primary" [disabled]="!loginForm.valid">登入</button>
+      <a href="https://github.com/XuPeiYao/drive" class="signup">造訪本專案GitHub</a>
+    </div>
+  </form>
+</div>

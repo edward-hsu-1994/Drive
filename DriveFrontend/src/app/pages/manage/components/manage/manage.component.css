@@ -1,0 +1,10 @@
+.logoIcon {
+  color: #fff;
+}
+
+.branding {
+  min-width: initial;
+}
+
+@media screen and (max-width: 768px) {
+}
