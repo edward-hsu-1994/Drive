@@ -1,12 +1,15 @@
 <div class="main-container">
 
   <header class="header-6">
+    <!-- #region LOGO部分 -->
     <div class="branding">
       <a href="/manage" class="nav-link logoIcon">
         <clr-icon shape="cloud"></clr-icon>
         <span class="title">Drive</span>
       </a>
     </div>
+    <!-- #endregion -->
+    <!-- #region 導覽列 -->
     <div class="header-nav">
       <a routerLink="/manage/user" routerLinkActive="active" class="nav-link nav-icon">
         <clr-icon shape="users"></clr-icon>
@@ -15,11 +18,13 @@
         <clr-icon shape="folder"></clr-icon>
       </a>
     </div>
-    <form class="search">
+    <form [formGroup]="searchForm" class="search">
       <label for="search_input" (click)="search($event)">
-        <input id="search_input" type="text" placeholder="搜尋檔案或目錄...">
+        <input id="search_input" formControlName="query" type="text" placeholder="搜尋檔案或目錄...">
       </label>
     </form>
+    <!-- #endregion -->
+    <!-- #region 右上角使用者選單 -->
     <div class="header-actions">
       <clr-dropdown>
         <button class="nav-icon" clrDropdownTrigger>
@@ -27,12 +32,12 @@
           <clr-icon shape="caret down"></clr-icon>
         </button>
         <clr-dropdown-menu *clrIfOpen clrPosition="bottom-right">
-          <a href="..." clrDropdownItem>About</a>
-          <a href="..." clrDropdownItem>Preferences</a>
-          <a href="..." clrDropdownItem>Log out</a>
+          <a routerLink="/manage/user/{{getUserId()}}" clrDropdownItem>個人資訊</a>
+          <button (click)="logout()" clrDropdownItem>登出</button>
         </clr-dropdown-menu>
       </clr-dropdown>
     </div>
+    <!-- #endregion -->
   </header>
   <router-outlet></router-outlet>
 </div>

@@ -7,9 +7,16 @@ import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.componen
 import { DirectoryTreeComponent } from './components/directory-tree/directory-tree.component';
 import { ClarityModule } from '@clr/angular';
 import { DragToSelectModule } from 'ngx-drag-to-select';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
-  imports: [CommonModule, FileRoutingModule, ClarityModule, DragToSelectModule],
+  imports: [
+    CommonModule,
+    FileRoutingModule,
+    ClarityModule,
+    DragToSelectModule,
+    ReactiveFormsModule
+  ],
   declarations: [
     FileBrowserComponent,
     BreadcrumbComponent,
