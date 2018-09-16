@@ -25,6 +25,7 @@ export class FileBrowserComponent implements OnInit, AfterViewInit {
   query = null;
 
   filelist = [];
+  selectedFiles = [];
   nextlistUrl = null;
 
   @ViewChild(SelectContainerComponent)
