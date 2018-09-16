@@ -49,17 +49,17 @@
   <section class="sidenav-content">
     <div style="padding: 5px;">
       <div class="btn-group btn-primary" style="width:100%">
-        <button class="btn" style="width:50%">
+        <button class="btn" style="width:50%" (click)="createDirectoryAction()">
           <clr-icon shape="plus"></clr-icon>
           <span class="clr-icon-title">新增目錄</span>
         </button>
-        <button class="btn" style="width:50%">
+        <button class="btn" style="width:50%" (click)="uploadFile()">
           <clr-icon shape="upload"></clr-icon>
           <span class="clr-icon-title">上傳檔案</span>
         </button>
       </div>
     </div>
-    <app-directory-tree></app-directory-tree>
+    <app-directory-tree [(children)]="directories"></app-directory-tree>
   </section>
 </nav>
 <clr-modal [(clrModalOpen)]="showDeleteDialog" [clrModalClosable]="false">
@@ -85,6 +85,21 @@
   <div class="modal-footer">
     <button type="button" class="btn btn-outline" (click)="showRenameDialog = false">取消</button>
     <button type="button" class="btn btn-danger" [disabled]="!renameForm.valid" (click)="rename(renameForm.value.name)">確定</button>
+  </div>
+</clr-modal>
+<clr-modal [(clrModalOpen)]="showCreateDirectoryDialog" [clrModalClosable]="false">
+  <h3 class="modal-title">建立目錄</h3>
+  <div class="modal-body">
+    <form clrForm [formGroup]="createDirectoryForm" (ngSubmit)="createDirectory(renameForm.value.name)">
+      <clr-input-container>
+        <label>目錄名稱</label>
+        <input clrInput placeholder="目錄名稱" formControlName="name" />
+      </clr-input-container>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="showCreateDirectoryDialog = false">取消</button>
+    <button type="button" class="btn btn-danger" [disabled]="!createDirectoryForm.valid" (click)="createDirectory(createDirectoryForm.value.name)">確定</button>
   </div>
 </clr-modal>
 <context-menu>

@@ -1,7 +1,7 @@
-import { Injectable, EventEmitter } from '@angular/core';
+import { Injectable, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { UriBuilder } from 'uribuilder';
-import { Observable, from } from 'rxjs';
+import { Observable, from, Subject } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 
@@ -12,17 +12,17 @@ export class HttpClientBase {
   /**
    * HTTP Request執行前事件
    */
-  public beforeProcess = new EventEmitter<void>();
+  public beforeProcess = new Subject<void>();
 
   /**
    * HTTP Resposne之後事件
    */
-  public afterProcess = new EventEmitter<void>();
+  public afterProcess = new Subject<void>();
 
   /**
    * 當HTTP Request發生錯誤
    */
-  public onError = new EventEmitter<Response>();
+  public onError = new Subject<Response>();
 
   constructor(private _http: HttpClient) {}
 
@@ -182,14 +182,14 @@ export class HttpClientBase {
   private boxingEvent<T>(observable: Observable<T>) {
     return from<T>(
       new Promise((res, rej) => {
-        this.beforeProcess.emit();
+        this.beforeProcess.next();
         observable
           .pipe(
             tap(x => {
-              this.afterProcess.emit();
+              this.afterProcess.next();
             }),
             catchError((error: any, caught: Observable<any>) => {
-              this.onError.emit(error);
+              this.onError.next(error);
               return null;
             })
           )

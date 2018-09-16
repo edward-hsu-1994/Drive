@@ -5,7 +5,6 @@ import { FileBrowserComponent } from './components/file-browser/file-browser.com
 const routes: Routes = [
   {
     path: '**',
-    runGuardsAndResolvers: 'always',
     component: FileBrowserComponent
   }
 ];
