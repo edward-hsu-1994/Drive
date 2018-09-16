@@ -206,4 +206,15 @@ export class FileBrowserComponent implements OnInit, AfterViewInit {
       this.showDeleteDialog = false;
     });
   }
+
+  createDirectory() {}
+
+  uploadFile() {
+    const inputElement = document.createElement('input');
+    inputElement.type = 'file';
+    inputElement.multiple = true;
+
+    fromEvent(inputElement, 'change').subscribe(x => {});
+    inputElement.click();
+  }
 }
