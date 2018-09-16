@@ -23,6 +23,25 @@ export class FileService {
   }
 
   public move(from: string, to: string) {
-    return this.http.put(driveApi.file.move, { from: from, to: to }, {}, {});
+    return this.http.put(driveApi.file.move, { from, to }, {}, {});
+  }
+
+  public upload(path: string, files: FileList) {
+    const formData = new FormData();
+    for (let i = 0; i < files.length; i++) {
+      formData.append('files', files.item(i));
+    }
+
+    return this.http.post(driveApi.file.upload, { path }, formData);
+  }
+
+  public createDirectory(path: string, name: string) {
+    return this.http.post(
+      driveApi.file.createChild,
+      {
+        path: path + '/' + name
+      },
+      {}
+    );
   }
 }

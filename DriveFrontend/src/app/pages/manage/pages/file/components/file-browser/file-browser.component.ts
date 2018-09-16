@@ -32,6 +32,9 @@ export class FileBrowserComponent implements OnInit, AfterViewInit {
   renameForm = new FormGroup({
     name: new FormControl('', Validators.required)
   });
+  createDirectoryForm = new FormGroup({
+    name: new FormControl('', Validators.required)
+  });
 
   renameTarget;
 
@@ -45,7 +48,7 @@ export class FileBrowserComponent implements OnInit, AfterViewInit {
 
   showDeleteDialog = false;
   showRenameDialog = false;
-
+  showCreateDirectoryDialog = false;
   @ViewChild(SelectContainerComponent)
   fileListSelector: SelectContainerComponent;
 
@@ -206,15 +209,30 @@ export class FileBrowserComponent implements OnInit, AfterViewInit {
       this.showDeleteDialog = false;
     });
   }
-
-  createDirectory() {}
+  createDirectoryAction() {
+    this.showCreateDirectoryDialog = true;
+  }
+  createDirectory() {
+    this.fileService
+      .createDirectory(this.fullPath, this.createDirectoryForm.value.name)
+      .subscribe(x => {
+        this.showCreateDirectoryDialog = false;
+        this.load();
+      });
+  }
 
   uploadFile() {
     const inputElement = document.createElement('input');
     inputElement.type = 'file';
     inputElement.multiple = true;
 
-    fromEvent(inputElement, 'change').subscribe(x => {});
+    fromEvent(inputElement, 'change').subscribe(x => {
+      this.fileService
+        .upload(this.fullPath, inputElement.files)
+        .subscribe(y => {
+          this.load();
+        });
+    });
     inputElement.click();
   }
 }
