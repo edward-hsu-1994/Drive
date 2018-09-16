@@ -19,8 +19,9 @@
     <dts-select-container #container="dts-select-container" [(selectedItems)]="selectedFiles">
       <div class="row">
         <div *ngFor="let item of filelist" class="col-lg-2 col-md-4 col-sm-12 col-xs-12">
-          <div [dtsSelectItem]="item" class="card" style="cursor:pointer" (click)="fileItemActionButton(item)"
-            (dblclick)="openOrDownload(item)" (mouseenter)="item.mouseon=true" (mouseleave)="item.mouseon=false">
+          <div [dtsSelectItem]="item" [contextMenu]="basicMenu" [contextMenuSubject]="item" class="card" style="cursor:pointer"
+            (click)="fileItemActionButton(item)" (dblclick)="openOrDownload(item)" (mouseenter)="item.mouseon=true"
+            (mouseleave)="item.mouseon=false">
             <div class="card-img">
               <clr-icon *ngIf="isLoadMore(item)" shape="ellipsis-horizontal" style="width:100%;height: 100%;"></clr-icon>
               <clr-icon *ngIf="isParent(item)" shape="undo" style="width:100%;height: 100%;"></clr-icon>
@@ -71,3 +72,30 @@
     <button type="button" class="btn btn-danger" (click)="delete()">確定</button>
   </div>
 </clr-modal>
+<clr-modal [(clrModalOpen)]="showRenameDialog" [clrModalClosable]="false">
+  <h3 class="modal-title">重新命名</h3>
+  <div class="modal-body">
+    <form clrForm [formGroup]="renameForm" (ngSubmit)="rename(renameForm.value.name)">
+      <clr-input-container>
+        <label>新名稱</label>
+        <input clrInput placeholder="新名稱" formControlName="name" />
+      </clr-input-container>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="showRenameDialog = false">取消</button>
+    <button type="button" class="btn btn-danger" [disabled]="!renameForm.valid" (click)="rename(renameForm.value.name)">確定</button>
+  </div>
+</clr-modal>
+<context-menu>
+  <ng-template contextMenuItem (execute)="renameAction($event.item)">
+    重新命名
+  </ng-template>
+  <ng-template contextMenuItem (execute)="move($event.item)">
+    搬移
+  </ng-template>
+  <ng-template contextMenuItem divider="true"></ng-template>
+  <ng-template contextMenuItem (execute)="deleteSelect()">
+    刪除
+  </ng-template>
+</context-menu>

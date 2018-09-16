@@ -11,6 +11,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FileService } from '../../services/file.service';
 import { SelectContainerComponent } from 'ngx-drag-to-select';
 import { fromEvent } from 'rxjs';
+import { ContextMenuComponent } from 'ngx-contextmenu';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-file-browser',
@@ -27,6 +29,12 @@ export class FileBrowserComponent implements OnInit, AfterViewInit {
   filelist = [];
   selectedFiles = [];
 
+  renameForm = new FormGroup({
+    name: new FormControl('', Validators.required)
+  });
+
+  renameTarget;
+
   get selectedFilesCount() {
     return this.selectedFiles.filter(
       x => x.type !== 'Parent' && x.type !== 'LoadMore'
@@ -36,6 +44,7 @@ export class FileBrowserComponent implements OnInit, AfterViewInit {
   nextlistUrl = null;
 
   showDeleteDialog = false;
+  showRenameDialog = false;
 
   @ViewChild(SelectContainerComponent)
   fileListSelector: SelectContainerComponent;
@@ -45,6 +54,9 @@ export class FileBrowserComponent implements OnInit, AfterViewInit {
 
   @HostBinding('class.content-container')
   true;
+
+  @ViewChild(ContextMenuComponent)
+  basicMenu: ContextMenuComponent;
 
   constructor(
     private route: ActivatedRoute,
@@ -163,6 +175,26 @@ export class FileBrowserComponent implements OnInit, AfterViewInit {
     }
     this.showDeleteDialog = true;
   }
+
+  renameAction(item) {
+    this.renameTarget = item.relativePath;
+    this.renameForm.setValue({ name: item.name });
+    this.showRenameDialog = true;
+  }
+
+  rename(newName) {
+    const newPath = this.renameTarget.split('/');
+    newPath.splice(-1, 1);
+    newPath.push(newName);
+
+    this.fileService.move(this.renameTarget, newPath.join('/')).subscribe(x => {
+      this.load();
+      this.renameForm.reset();
+      this.showRenameDialog = false;
+    });
+  }
+
+  move() {}
 
   delete() {
     const targets = this.selectedFiles
