@@ -12,6 +12,7 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "^6.1.0",
+    "@angular/cdk": "^6.4.7",
     "@angular/common": "^6.1.0",
     "@angular/compiler": "^6.1.0",
     "@angular/core": "^6.1.0",
@@ -26,7 +27,9 @@
     "@webcomponents/custom-elements": "^1.0.0",
     "core-js": "^2.5.4",
     "ng-marquee": "^1.0.2",
+    "ngx-contextmenu": "^5.0.3",
     "ngx-drag-to-select": "^2.0.0",
+    "ngx-loading": "^1.0.14",
     "rxjs": "~6.2.0",
     "uribuilder": "^1.0.5",
     "zone.js": "~0.8.26"
