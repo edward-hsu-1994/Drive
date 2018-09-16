@@ -172,11 +172,6 @@ namespace Drive.Controllers {
 
             // get the file attributes for file or directory
             FileAttributes fromAttr = System.IO.File.GetAttributes(fromFullPath);
-            FileAttributes toAttr = System.IO.File.GetAttributes(toFullPath);
-
-            if (toAttr != FileAttributes.Directory) {
-                throw new ParameterException("目標路徑必須為目錄");
-            }
 
             if (fromAttr == FileAttributes.Directory) {
                 DirectoryEntity.FromPath(fromFullPath).Move(toFullPath);
