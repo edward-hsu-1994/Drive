@@ -1,13 +1,23 @@
-import { Component, OnInit, HostBinding } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  HostBinding,
+  ViewChild,
+  HostListener,
+  AfterViewInit,
+  ElementRef
+} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FileService } from '../../services/file.service';
+import { SelectContainerComponent } from 'ngx-drag-to-select';
+import { fromEvent } from 'rxjs';
 
 @Component({
   selector: 'app-file-browser',
   templateUrl: './file-browser.component.html',
   styleUrls: ['./file-browser.component.css']
 })
-export class FileBrowserComponent implements OnInit {
+export class FileBrowserComponent implements OnInit, AfterViewInit {
   segments = [];
   paths = [];
 
@@ -15,6 +25,12 @@ export class FileBrowserComponent implements OnInit {
 
   filelist = [];
   nextlistUrl = null;
+
+  @ViewChild(SelectContainerComponent)
+  fileListSelector: SelectContainerComponent;
+
+  @ViewChild('fileListContainer')
+  fileListContainer: ElementRef;
 
   @HostBinding('class.content-container')
   true;
@@ -36,13 +52,24 @@ export class FileBrowserComponent implements OnInit {
       this.load();
     });
     route.queryParams.subscribe(x => {
+      const old_query = this.query;
+
       this.query = this.route.snapshot.queryParams.q;
 
-      this.load();
+      if (old_query !== this.query) {
+        this.load();
+      }
     });
   }
 
   ngOnInit() {}
+
+  ngAfterViewInit() {
+    console.log(this.fileListContainer.nativeElement);
+    fromEvent(this.fileListContainer.nativeElement, 'scroll').subscribe(x => {
+      this.fileListSelector.update();
+    });
+  }
 
   load() {
     this.fileService.list(this.paths.join('/')).subscribe(x => {

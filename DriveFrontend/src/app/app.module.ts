@@ -7,6 +7,7 @@ import { ClarityModule } from '@clr/angular';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DragToSelectModule } from 'ngx-drag-to-select';
+
 @NgModule({
   declarations: [AppComponent],
   imports: [
