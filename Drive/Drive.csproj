@@ -29,8 +29,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Drive.Base\Drive.Base.csproj" />
+    <ProjectReference Include="..\Drive.FileSystem\Drive.FileSystem.csproj" />
     <ProjectReference Include="..\Drive.Logic\Drive.Logic.csproj" />
-    <ProjectReference Include="..\Drive.Models\Drive.FileSystem.csproj" />
+    <ProjectReference Include="..\Drive.Models\Drive.Models.csproj" />
   </ItemGroup>
 
 </Project>
