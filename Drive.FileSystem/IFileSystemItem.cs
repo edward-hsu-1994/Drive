@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace Drive.FileSystem {
     /// <summary>
@@ -14,6 +16,7 @@ namespace Drive.FileSystem {
         DateTime ModifyTime { get; }
         DateTime AccessTime { get; }
 
+        [JsonConverter(typeof(StringEnumConverter))]
         FileSystemItemType Type { get; }
         string RelativePath { get; set; }
 
