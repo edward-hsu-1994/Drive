@@ -32,4 +32,10 @@
 .filelist > * {
   width: calc(100% - 2px);
   height: 100%;
+
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -o-user-select: none;
+  user-select: none;
 }
