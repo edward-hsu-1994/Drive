@@ -13,6 +13,11 @@ export class ManageComponent implements OnInit {
   searchForm: FormGroup = new FormGroup({
     query: new FormControl('', Validators.required)
   });
+
+  get isAdmin() {
+    return (sessionStorage.role || localStorage.role) === 'Administrator';
+  }
+
   constructor(private router: Router) {}
 
   ngOnInit() {}

@@ -11,7 +11,7 @@
     <!-- #endregion -->
     <!-- #region 導覽列 -->
     <div class="header-nav">
-      <a routerLink="/manage/user" routerLinkActive="active" class="nav-link nav-icon">
+      <a *ngIf="isAdmin" routerLink="/manage/user" routerLinkActive="active" class="nav-link nav-icon">
         <clr-icon shape="users"></clr-icon>
       </a>
       <a routerLink="/manage/file" routerLinkActive="active" class="nav-link nav-icon">
@@ -32,7 +32,7 @@
           <clr-icon shape="caret down"></clr-icon>
         </button>
         <clr-dropdown-menu *clrIfOpen clrPosition="bottom-right">
-          <a routerLink="/manage/user/{{getUserId()}}" clrDropdownItem>個人資訊</a>
+          <!-- <a routerLink="/manage/user/{{getUserId()}}" clrDropdownItem>個人資訊</a> -->
           <button (click)="logout()" clrDropdownItem>登出</button>
         </clr-dropdown-menu>
       </clr-dropdown>

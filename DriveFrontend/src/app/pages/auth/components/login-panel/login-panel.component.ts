@@ -33,12 +33,26 @@ export class LoginPanelComponent implements OnInit {
       .getToken(this.loginForm.value.id, this.loginForm.value.password)
       .subscribe(x => {
         sessionStorage.setItem('token', x);
+        sessionStorage.userId = this.getUserIdFromToken(x);
+        sessionStorage.role = this.getRoleFromToken(x);
+
         if (this.loginForm.value.remember) {
           localStorage.setItem('token', x);
+          localStorage.userId = this.getUserIdFromToken(x);
+          localStorage.role = this.getRoleFromToken(x);
         }
+
         this.router.navigateByUrl('/manage');
       });
     return false;
+  }
+
+  getRoleFromToken(token: string): string {
+    token = token.replace('bearer ', '');
+
+    return JSON.parse(atob(token.split('.')[1]))[
+      'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
+    ];
   }
 
   getUserIdFromToken(token: string): string {
