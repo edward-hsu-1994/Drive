@@ -12,13 +12,15 @@ export class FileService {
   constructor(public http: HttpClientBase) {}
 
   public list(
-    path: string | string[],
+    path: string,
+    q: string,
     type: 'Directory' | 'File' | null = null,
     skip: number = 0,
     take: number = 10
   ): Observable<any[]> {
     return this.http.get(driveApi.file.list, {
       path,
+      q,
       type,
       skip,
       take
