@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Drive.Models.EF;
+using Microsoft.EntityFrameworkCore;
 using XWidget.EFLogic;
 
 namespace Drive.Logic {
@@ -18,6 +20,7 @@ namespace Drive.Logic {
 
         public override async Task BeforeUpdate(User entity, params object[] parameters) {
             var obj = await GetAsync(entity.Id);
+
             if (entity.Password != obj.Password) {
                 entity.SetPassword(entity.Password);
             }

@@ -68,7 +68,7 @@ namespace Drive.Controllers {
         /// <param name="userId">使用者唯一識別號</param>
         [HttpDelete("{userId}")]
         public async Task Delete([FromRoute]string userId) {
-            if (Manager.List<User>(x => x.IsAdmin).Count() == 1) throw new OperatorException("至少要有一個管理者");
+            if (Manager.List<User>(x => x.IsAdmin && x.Id != userId).Count() == 0) throw new OperatorException("至少要有一個管理者");
             await Manager.DeleteAsync<User>(userId);
         }
 
