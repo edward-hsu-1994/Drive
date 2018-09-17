@@ -14,6 +14,9 @@ FROM build AS publish
 RUN dotnet publish "Drive.csproj" -c Release -o /app
 
 FROM base AS final
+
+ENV RootDirectory=/
+
 WORKDIR /app
 COPY --from=publish /app .
 ENTRYPOINT ["dotnet", "Drive.dll"]
