@@ -1,0 +1,19 @@
+<div style="padding:10px;">
+  <table class="table">
+    <thead>
+      <tr>
+        <th class="left">帳號</th>
+        <th>身分</th>
+        <th>功能</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of userlist">
+        <td class="left">{{user.id}}</td>
+        <td>{{user.isAdmin}}</td>
+        <td>Yes</td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>
