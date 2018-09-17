@@ -11,4 +11,16 @@ export class UserService {
   list() {
     return this.http.get<any[]>(driveApi.user.list, {});
   }
+
+  create(user) {
+    return this.http.post(driveApi.user.create, {}, user);
+  }
+
+  update(user) {
+    return this.http.put(driveApi.user.update, {}, user, {});
+  }
+
+  delete(user) {
+    return this.http.delete(driveApi.user.delete, { userId: user.id });
+  }
 }
