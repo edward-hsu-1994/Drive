@@ -86,7 +86,7 @@ namespace Drive.Controllers {
                 throw new AuthorizationException();
             }
 
-            return BuildToken(user);
+            return BuildToken(targetUser);
         }
 
         /// <summary>
