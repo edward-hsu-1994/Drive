@@ -9,8 +9,8 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.1.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="2.1.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.1.2" />
-    <PackageReference Include="XWidget.Cryptography" Version="1.3.0-beta00009" />
-    <PackageReference Include="XWidget.Web.Mvc.PropertyMask" Version="1.3.0-beta00009" />
+    <PackageReference Include="XWidget.Cryptography" Version="1.3.0-beta00011" />
+    <PackageReference Include="XWidget.Web.Mvc.PropertyMask" Version="1.3.0-beta00011" />
   </ItemGroup>
 
 </Project>

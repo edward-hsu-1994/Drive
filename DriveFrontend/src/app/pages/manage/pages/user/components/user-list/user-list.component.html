@@ -1,0 +1,62 @@
+<div style="padding:10px;">
+  <button type="button" class="btn btn-primary" (click)="createUserAction()">
+    新增
+  </button>
+  <table class="table">
+    <thead>
+      <tr>
+        <th class="left">帳號</th>
+        <th>身分</th>
+        <th>功能</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of userlist">
+        <td class="left">{{user.id}}</td>
+        <td>{{user.isAdmin?'管理員':'普通使用者'}}</td>
+        <td style="padding: 0;">
+          <button type="button" class="btn btn-primary" (click)="updateUserAction(user)">
+            編輯
+          </button>
+          <button type="button" class="btn btn-warning" (click)="deleteUserAction(user)">
+            刪除
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<clr-modal [(clrModalOpen)]="showUserDialog" [clrModalClosable]="false">
+  <h3 class="modal-title">建立目錄</h3>
+  <div class="modal-body">
+    <form clrForm [formGroup]="userForm" (ngSubmit)="createUser(userForm.value)">
+      <clr-input-container>
+        <label>帳號</label>
+        <input clrInput placeholder="帳號" formControlName="id" *ngIf="!isUpdate" />
+        <input clrInput placeholder="帳號" formControlName="id" *ngIf="isUpdate" disabled />
+      </clr-input-container>
+      <clr-input-container>
+        <label>密碼</label>
+        <input clrInput placeholder="密碼" type="password" formControlName="password" />
+      </clr-input-container>
+
+      <clr-checkbox formControlName="isAdmin" style="margin-top:10px">
+        <strong>設為系統管理員</strong>
+      </clr-checkbox>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="showUserDialog = false">取消</button>
+    <button type="button" class="btn btn-primary" [disabled]=" !userForm.valid" (click)="createUser(userForm.value)">確定</button>
+  </div>
+</clr-modal>
+<clr-modal [(clrModalOpen)]="showDeleteDialog" [clrModalClosable]="false">
+  <h3 class="modal-title">刪除使用者</h3>
+  <div class="modal-body">
+    <p>您確定將選擇的使用者刪除嗎?刪除後將無法恢復。</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="showDeleteDialog = false">取消</button>
+    <button type="button" class="btn btn-danger" (click)="deleteUser()">確定</button>
+  </div>
+</clr-modal>

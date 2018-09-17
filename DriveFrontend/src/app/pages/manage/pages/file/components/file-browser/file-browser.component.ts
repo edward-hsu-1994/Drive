@@ -106,7 +106,7 @@ export class FileBrowserComponent implements OnInit, AfterViewInit {
   }
 
   load() {
-    this.fileService.list(this.paths.join('/')).subscribe(x => {
+    this.fileService.list(this.paths.join('/'), this.query).subscribe(x => {
       if (this.paths.length > 1) {
         this.filelist = [{ name: '..', type: 'Parent' }].concat(x['result']);
       } else {
@@ -145,7 +145,8 @@ export class FileBrowserComponent implements OnInit, AfterViewInit {
 
   openOrDownload(item) {
     if (item.type === 'Directory' || item.type === 'Parent') {
-      this.router.navigate([item.name], { relativeTo: this.route });
+      // this.router.navigate([item.name], { relativeTo: this.route });
+      this.router.navigateByUrl('/manage/file/' + item.relativePath);
     } else if (item.type === 'LoadMore') {
       this.loadMore();
     } else {

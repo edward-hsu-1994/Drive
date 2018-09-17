@@ -15,17 +15,17 @@ namespace Drive.Models.EF {
         /// 帳號
         /// </summary>
         [Key]
-        public string Id { get; set; }
+        public virtual string Id { get; set; }
 
         /// <summary>
         /// 密碼雜湊
         /// </summary>
         [PropertyMask]
-        public string Password { get; set; }
+        public virtual string Password { get; set; }
 
         /// <summary>
         /// 是否為系統管理員
         /// </summary>
-        public bool IsAdmin { get; set; }
+        public virtual bool IsAdmin { get; set; }
     }
 }

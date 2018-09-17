@@ -32,6 +32,7 @@ namespace Drive.Controllers {
         /// </summary>
         /// <param name="path">路徑</param>
         /// <param name="type">類型過濾</param>
+        /// <param name="q">搜尋關鍵字，遞迴搜尋</param>
         /// <param name="skip">起始索引</param>
         /// <param name="take">取得筆數</param>
         /// <returns>檔案列表分頁結果</returns>
@@ -40,6 +41,7 @@ namespace Drive.Controllers {
         public PagingWithUrl<IFileSystemItem> List(
             string path,
             FileSystemItemType? type,
+            string q,
             int skip = 0,
             int take = 10) {
             if (string.IsNullOrWhiteSpace(path)) {
@@ -50,16 +52,22 @@ namespace Drive.Controllers {
 
             string fullPath = System.IO.Path.Combine(Startup.Configuration[Startup.RootDirectory], path);
 
-            var fullResult = DirectoryEntity.FromPath(fullPath).GetChildren() // 取得指定目錄下所有檔案項目
-                .OrderBy(x => x.Type) // 目錄優先
-                .Where(x => !type.HasValue || x.Type == type.Value) // 類型過濾
-                .Select(x => {
-                    x.RelativePath = x.Path.Substring(rootDirectory.Path.Length).Replace('\\', '/');
-                    if (x is FileEntity file) {
-                        file.DownloadUrl = $"{Request.Scheme}://{Request.Host}/api/File/download?path={Uri.EscapeDataString(x.RelativePath)}&token={Uri.EscapeDataString(BuildToken(file))}";
-                    }
-                    return x;
-                });
+            IEnumerable<IFileSystemItem> fullResult;
+            if (!string.IsNullOrWhiteSpace(q)) {
+                fullResult = DirectoryEntity.FromPath(fullPath).Search(q);
+            } else {
+                fullResult = DirectoryEntity.FromPath(fullPath).GetChildren();
+            }
+
+            fullResult = fullResult.OrderBy(x => x.Type) // 目錄優先
+                    .Where(x => !type.HasValue || x.Type == type.Value) // 類型過濾
+                    .Select(x => {
+                        x.RelativePath = x.Path.Substring(rootDirectory.Path.Length).Replace('\\', '/');
+                        if (x is FileEntity file) {
+                            file.DownloadUrl = $"{Request.Scheme}://{Request.Host}/api/File/download?path={Uri.EscapeDataString(x.RelativePath)}&token={Uri.EscapeDataString(BuildToken(file))}";
+                        }
+                        return x;
+                    }); ;
 
             return new PagingWithUrl<IFileSystemItem>(fullResult, skip, take).Process(x => {
                 var builder = new UriBuilder(Request.GetDisplayUrl());

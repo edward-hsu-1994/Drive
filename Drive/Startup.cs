@@ -126,12 +126,11 @@ namespace Drive {
             //logicManager.Database.Database.ExecuteSqlCommand(createScript);
             #region Init Default User
             if (logicManager.UserLogic.List().Count() == 0) {
-                logicManager.UserLogic.Create(new User() {
+                var user = logicManager.UserLogic.Create(new User() {
                     Id = "admin",
+                    Password = "admin",
                     IsAdmin = true
-                }.Process(x => {
-                    x.SetPassword("admin");
-                }));
+                });
             }
             #endregion
 

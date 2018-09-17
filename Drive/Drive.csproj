@@ -21,10 +21,10 @@
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.Extensions.PlatformAbstractions" Version="1.1.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.0.1916590" />
-    <PackageReference Include="XWidget.Cryptography" Version="1.3.0-beta00009" />
-    <PackageReference Include="XWidget.Extensions" Version="1.3.0-beta00009" />
-    <PackageReference Include="XWidget.Utilities" Version="1.3.0-beta00009" />
-    <PackageReference Include="XWidget.Web.Jwt" Version="1.3.0-beta00009" />
+    <PackageReference Include="XWidget.Cryptography" Version="1.3.0-beta00011" />
+    <PackageReference Include="XWidget.Extensions" Version="1.3.0-beta00011" />
+    <PackageReference Include="XWidget.Utilities" Version="1.3.0-beta00011" />
+    <PackageReference Include="XWidget.Web.Jwt" Version="1.3.0-beta00011" />
   </ItemGroup>
 
   <ItemGroup>
