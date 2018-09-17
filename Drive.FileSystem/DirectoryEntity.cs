@@ -95,7 +95,7 @@ namespace Drive.FileSystem {
             var files = DirectoryInfo.GetFiles(patten, SearchOption.AllDirectories).Select(x => (IFileSystemItem)FileEntity.FromFileInfo(x));
             var directories = DirectoryInfo.GetDirectories(patten, SearchOption.AllDirectories).Select(x => (IFileSystemItem)DirectoryEntity.FromDirectoryInfo(x));
 
-            return directories.Concat(directories).ToArray();
+            return directories.Concat(files).ToArray();
         }
 
         public void Move(string targetPath) {
