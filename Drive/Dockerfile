@@ -13,10 +13,22 @@ RUN dotnet build "Drive.csproj" -c Release -o /app
 FROM build AS publish
 RUN dotnet publish "Drive.csproj" -c Release -o /app
 
+# 建構前端Angular專案
+FROM node as frontendbuild
+WORKDIR /frontend
+#複製Angular專案原始碼
+COPY DriveFrontend .
+#安裝套件
+RUN npm i 
+#建置
+RUN npm run build
+
 FROM base AS final
-
-ENV RootDirectory=/
-
+# 預設檔案目錄
+VOLUME /data
+# 預設檔案目錄
+ENV RootDirectory=/data
 WORKDIR /app
 COPY --from=publish /app .
+COPY --from=frontendbuild /frontend/dist/DriveFrontend ./wwwroot #複製前端建置結果
 ENTRYPOINT ["dotnet", "Drive.dll"]
