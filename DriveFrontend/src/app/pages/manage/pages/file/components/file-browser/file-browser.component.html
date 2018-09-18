@@ -103,6 +103,9 @@
   </div>
 </clr-modal>
 <context-menu>
+  <ng-template contextMenuItem (execute)="openOrDownload($event.item)">
+    下載或開啟
+  </ng-template>
   <ng-template contextMenuItem (execute)="renameAction($event.item)">
     重新命名
   </ng-template>
