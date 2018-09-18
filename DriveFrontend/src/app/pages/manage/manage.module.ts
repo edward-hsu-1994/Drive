@@ -3,9 +3,10 @@ import { CommonModule } from '@angular/common';
 
 import { ManageRoutingModule } from './manage-routing.module';
 import { ManageComponent } from './components/manage/manage.component';
-import { ClarityModule } from '@clr/angular';
+import { ClarityModule, ClrInputModule } from '@clr/angular';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ContextMenuModule } from 'ngx-contextmenu';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   imports: [
@@ -13,7 +14,9 @@ import { ContextMenuModule } from 'ngx-contextmenu';
     ManageRoutingModule,
     ClarityModule,
     ReactiveFormsModule,
-    ContextMenuModule
+    ClrInputModule,
+    ContextMenuModule,
+    HttpClientModule
   ],
   declarations: [ManageComponent]
 })

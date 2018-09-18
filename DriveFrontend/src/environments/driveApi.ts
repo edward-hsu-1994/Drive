@@ -6,7 +6,8 @@ export const driveApi = {
     get: 'api/User/{userId}',
     create: 'api/User',
     update: 'api/User',
-    delete: 'api/User/{userId}'
+    delete: 'api/User/{userId}',
+    changePassword: 'api/User/changePassword'
   },
   file: {
     list: 'api/File/{path}',

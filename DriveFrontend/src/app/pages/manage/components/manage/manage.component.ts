@@ -3,6 +3,7 @@ import { environment } from '../../../../../environments/environment';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UriBuilder } from 'uribuilder';
+import { UserSelfService } from '../../services/user-self.service';
 
 @Component({
   selector: 'app-manage',
@@ -13,12 +14,20 @@ export class ManageComponent implements OnInit {
   searchForm: FormGroup = new FormGroup({
     query: new FormControl('', Validators.required)
   });
+  userForm = new FormGroup({
+    password: new FormControl('', Validators.required)
+  });
+
+  showChangePasswordDialog = false;
 
   get isAdmin() {
     return (sessionStorage.role || localStorage.role) === 'Administrator';
   }
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private userSelfService: UserSelfService
+  ) {}
 
   ngOnInit() {}
 
@@ -45,5 +54,15 @@ export class ManageComponent implements OnInit {
     localStorage.clear();
 
     this.router.navigateByUrl('/');
+  }
+
+  changePasswordAction() {
+    this.showChangePasswordDialog = true;
+  }
+
+  changePassword(newPassword: string) {
+    this.userSelfService.changePassword(newPassword).subscribe(x => {
+      this.showChangePasswordDialog = false;
+    });
   }
 }
