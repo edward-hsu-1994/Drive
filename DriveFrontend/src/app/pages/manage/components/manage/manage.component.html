@@ -32,7 +32,7 @@
           <clr-icon shape="caret down"></clr-icon>
         </button>
         <clr-dropdown-menu *clrIfOpen clrPosition="bottom-right">
-          <!-- <a routerLink="/manage/user/{{getUserId()}}" clrDropdownItem>個人資訊</a> -->
+          <button (click)="changePasswordAction()" clrDropdownItem>變更密碼</button>
           <button (click)="logout()" clrDropdownItem>登出</button>
         </clr-dropdown-menu>
       </clr-dropdown>
@@ -41,3 +41,18 @@
   </header>
   <router-outlet></router-outlet>
 </div>
+<clr-modal [(clrModalOpen)]="showChangePasswordDialog" [clrModalClosable]="false">
+  <h3 class="modal-title">變更密碼</h3>
+  <div class="modal-body">
+    <form clrForm [formGroup]="userForm" (ngSubmit)="changePassword(userForm.value.password)">
+      <clr-input-container>
+        <label>密碼</label>
+        <input clrInput placeholder="密碼" type="password" formControlName="password" />
+      </clr-input-container>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="showChangePasswordDialog = false">取消</button>
+    <button type="button" class="btn btn-primary" [disabled]="!userForm.valid" (click)="changePassword(userForm.value.password)">確定</button>
+  </div>
+</clr-modal>

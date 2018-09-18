@@ -29,8 +29,10 @@ namespace Drive {
         public Startup(IConfiguration configuration) {
             Configuration = configuration;
 
-            if (Configuration[RootDirectory] == null) {
-                Configuration[RootDirectory] = Environment.GetEnvironmentVariable(RootDirectory);
+            if (string.IsNullOrEmpty(Configuration[RootDirectory])) {
+                Configuration[RootDirectory] =
+                    Environment.GetEnvironmentVariable(RootDirectory) ??
+                    "./data";
             }
         }
 

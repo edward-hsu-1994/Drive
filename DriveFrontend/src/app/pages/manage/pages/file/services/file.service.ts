@@ -45,10 +45,14 @@ export class FileService {
   }
 
   public createDirectory(path: string, name: string) {
+    let createPath = path + '/' + name;
+    if (createPath[0] === '/') {
+      createPath = createPath.substring(1);
+    }
     return this.http.post(
       driveApi.file.createChild,
       {
-        path: path + '/' + name
+        path: createPath
       },
       {}
     );

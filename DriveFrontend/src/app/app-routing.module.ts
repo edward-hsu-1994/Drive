@@ -1,10 +1,14 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { NonLoginResolve } from './services/non-login-resolve.service';
 
 const routes: Routes = [
   {
     path: 'manage',
-    loadChildren: './pages/manage/manage.module#ManageModule'
+    loadChildren: './pages/manage/manage.module#ManageModule',
+    resolve: {
+      nonLogin: NonLoginResolve
+    }
   },
   {
     path: 'auth',

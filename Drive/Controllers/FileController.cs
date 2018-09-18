@@ -63,6 +63,9 @@ namespace Drive.Controllers {
                     .Where(x => !type.HasValue || x.Type == type.Value) // 類型過濾
                     .Select(x => {
                         x.RelativePath = x.Path.Substring(rootDirectory.Path.Length).Replace('\\', '/');
+                        if (x.RelativePath[0] == '/') {
+                            x.RelativePath = x.RelativePath.Substring(1);
+                        }
                         if (x is FileEntity file) {
                             file.DownloadUrl = $"{Request.Scheme}://{Request.Host}/api/File/download?path={Uri.EscapeDataString(x.RelativePath)}&token={Uri.EscapeDataString(BuildToken(file))}";
                         }

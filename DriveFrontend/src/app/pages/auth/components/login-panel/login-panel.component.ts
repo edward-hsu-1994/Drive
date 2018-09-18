@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { LoginService } from '../../services/login.service';
 import { environment } from '../../../../../environments/environment';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { AppComponent } from '../../../../app.component';
 
 @Component({
   selector: 'app-login-panel',
@@ -20,7 +21,8 @@ export class LoginPanelComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private loginService: LoginService
+    private loginService: LoginService,
+    private app: AppComponent
   ) {
     this.error = route.snapshot.data.tokenCheck;
   }
@@ -28,22 +30,31 @@ export class LoginPanelComponent implements OnInit {
   ngOnInit() {}
 
   login() {
-    console.log(this.loginForm);
+    this.app.loading = true;
     this.loginService
       .getToken(this.loginForm.value.id, this.loginForm.value.password)
-      .subscribe(x => {
-        sessionStorage.setItem('token', x);
-        sessionStorage.userId = this.getUserIdFromToken(x);
-        sessionStorage.role = this.getRoleFromToken(x);
+      .subscribe(
+        x => {
+          this.app.loading = false;
 
-        if (this.loginForm.value.remember) {
-          localStorage.setItem('token', x);
-          localStorage.userId = this.getUserIdFromToken(x);
-          localStorage.role = this.getRoleFromToken(x);
+          sessionStorage.setItem('token', x);
+          sessionStorage.userId = this.getUserIdFromToken(x);
+          sessionStorage.role = this.getRoleFromToken(x);
+
+          if (this.loginForm.value.remember) {
+            localStorage.setItem('token', x);
+            localStorage.userId = this.getUserIdFromToken(x);
+            localStorage.role = this.getRoleFromToken(x);
+          }
+
+          this.router.navigateByUrl('/manage');
+        },
+        error => {
+          this.app.loading = false;
+
+          this.error = '帳號或密碼錯誤';
         }
-
-        this.router.navigateByUrl('/manage');
-      });
+      );
     return false;
   }
 

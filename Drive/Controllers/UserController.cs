@@ -18,7 +18,7 @@ namespace Drive.Controllers {
     /// <summary>
     /// 使用者控制器
     /// </summary>
-    [Authorize(Roles = DriveToken.Roles.Administrator)]
+    [Authorize]
     public class UserController : BaseController {
         public UserController(DriveLogicManager manager) : base(manager) {
         }
@@ -27,6 +27,7 @@ namespace Drive.Controllers {
         /// 取得使用者列表
         /// </summary>
         /// <returns>使用者列表</returns>
+        [Authorize(Roles = DriveToken.Roles.Administrator)]
         [HttpGet]
         public async Task<IEnumerable<User>> List() {
             return this.Mask(await Manager.UserLogic.ListAsync());
@@ -37,6 +38,7 @@ namespace Drive.Controllers {
         /// </summary>
         /// <param name="userId">使用者唯一識別號</param>
         /// <returns>使用者資訊</returns>
+        [Authorize(Roles = DriveToken.Roles.Administrator)]
         [HttpGet("{userId}")]
         public async Task<User> Get([FromRoute]string userId) {
             return this.Mask(await Manager.GetAsync<User>(userId));
@@ -47,6 +49,7 @@ namespace Drive.Controllers {
         /// </summary>
         /// <param name="user">使用者資訊</param>
         /// <returns>建立的使用者資訊</returns>
+        [Authorize(Roles = DriveToken.Roles.Administrator)]
         [HttpPost]
         public async Task<User> Create([FromBody]User user) {
             return await Manager.CreateAsync(user);
@@ -57,6 +60,7 @@ namespace Drive.Controllers {
         /// </summary>
         /// <param name="user">使用者資訊</param>
         /// <returns>更新後使用者資訊</returns>
+        [Authorize(Roles = DriveToken.Roles.Administrator)]
         [HttpPut]
         public async Task<User> Update([FromBody]User user) {
             return await Manager.UpdateAsync(user);
@@ -66,6 +70,7 @@ namespace Drive.Controllers {
         /// 刪除指定使用者
         /// </summary>
         /// <param name="userId">使用者唯一識別號</param>
+        [Authorize(Roles = DriveToken.Roles.Administrator)]
         [HttpDelete("{userId}")]
         public async Task Delete([FromRoute]string userId) {
             if (Manager.List<User>(x => x.IsAdmin && x.Id != userId).Count() == 0) throw new OperatorException("至少要有一個管理者");
@@ -87,6 +92,18 @@ namespace Drive.Controllers {
             }
 
             return BuildToken(targetUser);
+        }
+
+        /// <summary>
+        /// 更新密碼
+        /// </summary>
+        /// <param name="newPassword">新密碼</param>
+        /// <returns></returns>
+        [HttpPut("changePassword")]
+        public async Task ChangeMyPassword([FromBody]string newPassword) {
+            var user = await Manager.UserLogic.GetAsync(User.Identity.Name);
+            user.SetPassword(newPassword);
+            await Manager.UserLogic.UpdateAsync(user);
         }
 
         /// <summary>

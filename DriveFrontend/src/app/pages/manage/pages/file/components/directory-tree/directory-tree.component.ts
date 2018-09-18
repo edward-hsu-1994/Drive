@@ -29,8 +29,12 @@ export class DirectoryTreeComponent implements OnInit {
 
   ngOnInit() {
     if (this.parent) {
+      let path = this.parent.relativePath;
+      if (this.parent.relativePath[0] === '/') {
+        path = path.substring(1);
+      }
       this.fileService
-        .list(this.parent.relativePath, null, 'Directory', 0, 2147483647)
+        .list(path, null, 'Directory', 0, 2147483647)
         .subscribe(x => {
           this.children = x['result'];
         });
