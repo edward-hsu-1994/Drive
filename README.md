@@ -2,6 +2,12 @@
 基於Docker技術的簡易檔案管理器
 
 ## 佈署
+預設系統管理者帳號密碼如下
+
+ID: `admin`
+
+PASSWORD: `admin`
+
 ### Docker
 ```shell
 docker run -d -p 80:80 xupeiyao/drive:1.0.0 mydrive
