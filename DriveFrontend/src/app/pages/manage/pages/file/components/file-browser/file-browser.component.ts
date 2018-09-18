@@ -106,23 +106,25 @@ export class FileBrowserComponent implements OnInit, AfterViewInit {
   }
 
   load() {
-    this.fileService.list(this.paths.join('/'), this.query).subscribe(x => {
-      if (this.paths.length > 1) {
-        this.filelist = [{ name: '..', type: 'Parent' }].concat(x['result']);
-      } else {
-        this.filelist = x['result'];
-      }
+    this.fileService
+      .list(this.paths.join('/').substring(1), this.query)
+      .subscribe(x => {
+        if (this.paths.length > 1) {
+          this.filelist = [{ name: '..', type: 'Parent' }].concat(x['result']);
+        } else {
+          this.filelist = x['result'];
+        }
 
-      if (x['hasNextPage']) {
-        this.nextlistUrl = x['next'];
-        this.filelist.push({
-          name: '讀取更多',
-          type: 'LoadMore'
-        });
-      } else {
-        this.nextlistUrl = null;
-      }
-    });
+        if (x['hasNextPage']) {
+          this.nextlistUrl = x['next'];
+          this.filelist.push({
+            name: '讀取更多',
+            type: 'LoadMore'
+          });
+        } else {
+          this.nextlistUrl = null;
+        }
+      });
   }
 
   loadMore() {
@@ -226,7 +228,10 @@ export class FileBrowserComponent implements OnInit, AfterViewInit {
   }
   createDirectory() {
     this.fileService
-      .createDirectory(this.fullPath, this.createDirectoryForm.value.name)
+      .createDirectory(
+        this.fullPath.substring(1),
+        this.createDirectoryForm.value.name
+      )
       .subscribe(x => {
         this.showCreateDirectoryDialog = false;
         this.load();
@@ -240,7 +245,7 @@ export class FileBrowserComponent implements OnInit, AfterViewInit {
 
     fromEvent(inputElement, 'change').subscribe(x => {
       this.fileService
-        .upload(this.fullPath, inputElement.files)
+        .upload(this.fullPath.substring(1), inputElement.files)
         .subscribe(y => {
           this.load();
         });

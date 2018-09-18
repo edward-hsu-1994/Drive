@@ -30,5 +30,5 @@ VOLUME /data
 ENV RootDirectory=/data
 WORKDIR /app
 COPY --from=publish /app .
-COPY --from=frontendbuild /frontend/dist/DriveFrontend ./wwwroot #複製前端建置結果
+COPY --from=frontendbuild /frontend/dist/DriveFrontend ./wwwroot
 ENTRYPOINT ["dotnet", "Drive.dll"]

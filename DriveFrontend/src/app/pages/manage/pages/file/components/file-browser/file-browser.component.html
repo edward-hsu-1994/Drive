@@ -84,7 +84,7 @@
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-outline" (click)="showRenameDialog = false">取消</button>
-    <button type="button" class="btn btn-danger" [disabled]="!renameForm.valid" (click)="rename(renameForm.value.name)">確定</button>
+    <button type="button" class="btn btn-primary" [disabled]="!renameForm.valid" (click)="rename(renameForm.value.name)">確定</button>
   </div>
 </clr-modal>
 <clr-modal [(clrModalOpen)]="showCreateDirectoryDialog" [clrModalClosable]="false">
@@ -98,8 +98,8 @@
     </form>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-primary" (click)="showCreateDirectoryDialog = false">取消</button>
-    <button type="button" class="btn btn-danger" [disabled]="!createDirectoryForm.valid" (click)="createDirectory(createDirectoryForm.value.name)">確定</button>
+    <button type="button" class="btn btn-outline" (click)="showCreateDirectoryDialog = false">取消</button>
+    <button type="button" class="btn btn-primary" [disabled]="!createDirectoryForm.valid" (click)="createDirectory(createDirectoryForm.value.name)">確定</button>
   </div>
 </clr-modal>
 <context-menu>
@@ -109,9 +109,9 @@
   <ng-template contextMenuItem (execute)="renameAction($event.item)">
     重新命名
   </ng-template>
-  <ng-template contextMenuItem (execute)="move($event.item)">
+  <!-- <ng-template contextMenuItem (execute)="move($event.item)">
     搬移
-  </ng-template>
+  </ng-template> -->
   <ng-template contextMenuItem divider="true"></ng-template>
   <ng-template contextMenuItem (execute)="deleteSelect()">
     刪除
