@@ -98,7 +98,7 @@
     </form>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline" (click)="showCreateDirectoryDialog = false">取消</button>
+    <button type="button" class="btn btn-primary" (click)="showCreateDirectoryDialog = false">取消</button>
     <button type="button" class="btn btn-danger" [disabled]="!createDirectoryForm.valid" (click)="createDirectory(createDirectoryForm.value.name)">確定</button>
   </div>
 </clr-modal>

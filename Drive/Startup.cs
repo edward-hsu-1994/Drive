@@ -32,7 +32,7 @@ namespace Drive {
             if (string.IsNullOrEmpty(Configuration[RootDirectory])) {
                 Configuration[RootDirectory] =
                     Environment.GetEnvironmentVariable(RootDirectory) ??
-                    "./";
+                    "./data";
             }
         }
 
