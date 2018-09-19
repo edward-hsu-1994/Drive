@@ -1,6 +1,19 @@
 # Drive
 基於Docker技術的簡易檔案管理器
 
+## 佈署
+預設系統管理者帳號密碼如下
+
+ID: `admin`
+
+PASSWORD: `admin`
+
+### Docker
+```shell
+docker run -d -p 80:80 xupeiyao/drive:1.0.0 mydrive
+```
+備註: 可以使用volume連結`/data`
+
 ## 前言
 隨VPS在現在資訊系統環境部屬上的普及應用，日常中有許多服務大部分轉移使用VPS
 ，在伺服器系統中常見的有Windows以及Linux，在使用Linux VPS時在部屬服務時
