@@ -16,7 +16,7 @@ export class FileService {
     q: string,
     type: 'Directory' | 'File' | null = null,
     skip: number = 0,
-    take: number = 10
+    take: number = 20
   ): Observable<any[]> {
     return this.http.get(driveApi.file.list, {
       path,
