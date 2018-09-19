@@ -26,8 +26,9 @@
               <clr-icon *ngIf="isLoadMore(item)" shape="ellipsis-horizontal" style="width:100%;height: 100%;"></clr-icon>
               <clr-icon *ngIf="isParent(item)" shape="undo" style="width:100%;height: 100%;"></clr-icon>
               <clr-icon *ngIf="isDirectory(item)" shape="folder" style="width:100%;height: 100%;"></clr-icon>
-              <clr-icon *ngIf="!isDirectory(item) && !isImage(item) && !isParent(item) && !isLoadMore(item)" shape="file"
-                style="width:100%;height: 100%;"></clr-icon>
+              <div *ngIf="!isDirectory(item) && !isImage(item) && !isParent(item) && !isLoadMore(item)"
+                [style.backgroundImage]="'url(https://drive-thirdparty.googleusercontent.com/128/type/' + item.contentType + ')'"
+                style="background-repeat:no-repeat;background-position:center;padding-top: 100%;"></div>
               <div *ngIf="isImage(item)" [style.backgroundImage]="'url(' + item.downloadUrl + ')'" style="background-size: cover;padding-top: 100%;"></div>
             </div>
             <div class="card-block">
