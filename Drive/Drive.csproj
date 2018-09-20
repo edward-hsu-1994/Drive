@@ -6,11 +6,11 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>G:\Drive\Drive\Drive.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\netcoreapp2.1\Drive.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>G:\Drive\Drive\Drive.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\netcoreapp2.1\Drive.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
